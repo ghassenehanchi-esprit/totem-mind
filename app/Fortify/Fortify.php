@@ -9,6 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 class Fortify
 {
     /**
+     * Indicates if Fortify should register the authentication routes.
+     */
+    public static bool $registersRoutes = true;
+
+    /**
+
      * The callbacks used to render Fortify views.
      *
      * @var array<string, callable|null>
@@ -86,6 +92,17 @@ class Fortify
     {
         return isset(static::$viewCallbacks[$key]) && is_callable(static::$viewCallbacks[$key]);
     }
+
+    public static function ignoreRoutes(): void
+    {
+        static::$registersRoutes = false;
+    }
+
+    public static function shouldRegisterRoutes(): bool
+    {
+        return static::$registersRoutes;
+    }
+
 
     protected static function render(string $key, Request $request): Response
     {
