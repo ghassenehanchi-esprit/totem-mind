@@ -12,8 +12,20 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                brand: {
+                    ocean: '#415a78',
+                    midnight: '#1d263d',
+                    sand: '#e0e1dc',
+                    cream: '#f4f1ea',
+                },
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans],
+                serif: ['"Playfair Display"', ...defaultTheme.fontFamily.serif],
+            },
+            letterSpacing: {
+                wider: '0.3em',
             },
         },
     },
