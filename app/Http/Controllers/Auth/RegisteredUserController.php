@@ -2,50 +2,73 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Support\FortifyLimiter;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Inertia\Response;
+use Laravel\Fortify\Fortify;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct(private CreateNewUser $creator)
+    {
+    }
+
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+        return Fortify::renderRegisterView($request);
     }
 
     /**
      * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $this->ensureIsNotRateLimited($request);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $key = $this->registerThrottleKey($request);
+        $decay = FortifyLimiter::decaySeconds('register', 3, 5);
+
+        RateLimiter::hit($key, $decay);
+
+        $user = $this->creator->create($request->all());
+
+        RateLimiter::clear($key);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        return redirect()->route('register.complete');
+    }
 
-        return redirect(route('dashboard', absolute: false));
+    protected function ensureIsNotRateLimited(Request $request): void
+    {
+        $key = $this->registerThrottleKey($request);
+        $maxAttempts = FortifyLimiter::maxAttempts('register', 3, 5);
+
+        if (! RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+            return;
+        }
+
+        $seconds = RateLimiter::availableIn($key);
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.throttle', [
+                'seconds' => $seconds,
+                'minutes' => (int) ceil($seconds / 60),
+            ]),
+        ]);
+    }
+
+    protected function registerThrottleKey(Request $request): string
+    {
+        return 'register|'.$request->ip();
     }
 }
