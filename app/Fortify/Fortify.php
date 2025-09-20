@@ -5,6 +5,8 @@ namespace Laravel\Fortify;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
+use function response;
+use function view;
 
 class Fortify
 {
@@ -26,6 +28,11 @@ class Fortify
         'confirmPassword' => null,
         'verifyEmail' => null,
     ];
+
+    /**
+     * The prefix applied to Fortify view names when callbacks are not provided.
+     */
+    protected static string $viewPrefix = '';
 
     public static function loginView(callable $callback): void
     {
@@ -55,6 +62,19 @@ class Fortify
     public static function verifyEmailView(callable $callback): void
     {
         static::$viewCallbacks['verifyEmail'] = $callback;
+    }
+
+    public static function viewPrefix(string $prefix): void
+    {
+        $normalized = trim($prefix);
+
+        if ($normalized === '') {
+            static::$viewPrefix = '';
+
+            return;
+        }
+
+        static::$viewPrefix = rtrim($normalized, '.').'.';
     }
 
     public static function renderLoginView(Request $request): Response
@@ -106,10 +126,18 @@ class Fortify
     {
         $callback = static::$viewCallbacks[$key] ?? null;
 
-        if (! is_callable($callback)) {
-            throw new InvalidArgumentException("Fortify view [{$key}] has not been defined.");
+        if (is_callable($callback)) {
+            return value($callback, $request);
         }
 
-        return value($callback, $request);
+        if (static::$viewPrefix !== '') {
+            $view = static::$viewPrefix.$key;
+
+            if (view()->exists($view)) {
+                return response()->view($view, ['request' => $request]);
+            }
+        }
+
+        throw new InvalidArgumentException("Fortify view [{$key}] has not been defined.");
     }
 }
