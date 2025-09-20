@@ -14,6 +14,7 @@ class Fortify
     public static bool $registersRoutes = true;
 
     /**
+
      * The callbacks used to render Fortify views.
      *
      * @var array<string, callable|null>
@@ -101,6 +102,7 @@ class Fortify
     {
         return static::$registersRoutes;
     }
+
 
     protected static function render(string $key, Request $request): Response
     {
