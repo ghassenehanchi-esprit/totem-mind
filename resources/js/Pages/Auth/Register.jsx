@@ -1,17 +1,97 @@
+import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SocialAuthButton from '@/Components/SocialAuthButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
+
+const strengthStyles = {
+    faible: 'text-rose-200',
+    moyen: 'text-yellow-200',
+    fort: 'text-emerald-200',
+};
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        birthdate: '',
         password: '',
         password_confirmation: '',
+        captcha: false,
     });
+
+    const [isUnderage, setIsUnderage] = useState(false);
+
+    useEffect(() => {
+        if (data.email && !data.name) {
+            setData('name', data.email);
+        }
+
+        if (!data.email && data.name) {
+            setData('name', '');
+        }
+    }, [data.email]);
+
+    const maxBirthdate = useMemo(() => {
+        const today = new Date();
+        return today.toISOString().split('T')[0];
+    }, []);
+
+    const passwordStrength = useMemo(() => {
+        const value = data.password;
+
+        if (!value) {
+            return null;
+        }
+
+        let score = 0;
+
+        if (value.length >= 8) score += 1;
+        if (/[A-Z]/.test(value)) score += 1;
+        if (/[a-z]/.test(value)) score += 1;
+        if (/\d/.test(value)) score += 1;
+        if (/[^A-Za-z0-9]/.test(value)) score += 1;
+
+        if (score >= 4) {
+            return 'fort';
+        }
+
+        if (score >= 3) {
+            return 'moyen';
+        }
+
+        return 'faible';
+    }, [data.password]);
+
+    const handleBirthdateChange = (value) => {
+        setData('birthdate', value);
+
+        if (!value) {
+            setIsUnderage(false);
+            return;
+        }
+
+        const birthDate = new Date(value);
+
+        if (Number.isNaN(birthDate.getTime())) {
+            setIsUnderage(false);
+            return;
+        }
+
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age -= 1;
+        }
+
+        setIsUnderage(age < 18);
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -21,100 +101,226 @@ export default function Register() {
         });
     };
 
+    const asideContent = (
+        <div className="flex flex-col items-center text-center text-white">
+            <img
+                src="/images/loup-blanc.png"
+                alt="Illustration d'un loup"
+                className="w-full max-w-sm"
+            />
+
+            <p className="mt-10 max-w-sm text-lg text-white/80">
+                Gagnez de l’argent avec des sondages rémunérés et rejoignez une
+                communauté passionnée par les esprits totems.
+            </p>
+        </div>
+    );
+
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <AuthLayout
+            aside={asideContent}
+            asideClassName="bg-brand-midnight"
+            footerVariant="light"
+        >
+            <Head title="Inscription" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
+            <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur">
+                <div className="text-center">
+                    <h1 className="text-4xl font-semibold text-white">
+                        S’inscrire par mail
+                    </h1>
+                    <p className="mt-4 text-sm text-white/70">
+                        Créez votre compte en quelques instants pour accéder à
+                        l’univers Totem Mind.
+                    </p>
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                <form className="mt-10 space-y-7" onSubmit={submit}>
+                    <div>
+                        <InputLabel
+                            htmlFor="email"
+                            value="Adresse mail"
+                            variant="brand"
+                        />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            variant="brand"
+                            placeholder="nom@exemple.com"
+                            autoComplete="email"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                        />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                        <InputError
+                            message={errors.email}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <div>
+                        <InputLabel
+                            htmlFor="birthdate"
+                            value="Date de naissance"
+                            variant="brand"
+                        />
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
+                        <TextInput
+                            id="birthdate"
+                            type="date"
+                            name="birthdate"
+                            value={data.birthdate}
+                            variant="brand"
+                            placeholder="JJ/MM/AAAA"
+                            max={maxBirthdate}
+                            onChange={(e) =>
+                                handleBirthdateChange(e.target.value)
+                            }
+                            required
+                        />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                        {isUnderage && (
+                            <p className="mt-2 text-sm text-white">
+                                Vous devez avoir au moins 18 ans pour rejoindre
+                                le site.
+                            </p>
+                        )}
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                        <InputError
+                            message={errors.birthdate}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
+                    <div>
+                        <InputLabel
+                            htmlFor="password"
+                            value="Mot de passe"
+                            variant="brand"
+                        />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            variant="brand"
+                            autoComplete="new-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                        />
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        {passwordStrength && (
+                            <p
+                                className={`mt-3 text-sm font-semibold uppercase tracking-[0.2em] ${
+                                    strengthStyles[passwordStrength]
+                                }`.trim()}
+                            >
+                                Mot de passe :{' '}
+                                <span className="lowercase">
+                                    {passwordStrength}
+                                </span>
+                                !
+                            </p>
+                        )}
+
+                        <InputError
+                            message={errors.password}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div>
+                        <InputLabel
+                            htmlFor="password_confirmation"
+                            value="Confirmation du mot de passe"
+                            variant="brand"
+                        />
+
+                        <TextInput
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            variant="brand"
+                            autoComplete="new-password"
+                            onChange={(e) =>
+                                setData('password_confirmation', e.target.value)
+                            }
+                            required
+                        />
+
+                        <InputError
+                            message={errors.password_confirmation}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-3 rounded-full bg-white/10 px-5 py-4">
+                        <Checkbox
+                            id="captcha"
+                            name="captcha"
+                            checked={data.captcha}
+                            onChange={(e) =>
+                                setData('captcha', e.target.checked)
+                            }
+                            className="size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
+                        />
+
+                        <label
+                            htmlFor="captcha"
+                            className="text-sm text-white/90"
+                        >
+                            Je ne suis pas un robot
+                        </label>
+                    </div>
+
+                    <PrimaryButton
+                        type="submit"
+                        variant="brand"
+                        disabled={processing}
                     >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        S’inscrire gratuitement
                     </PrimaryButton>
+                </form>
+            </div>
+
+            <div className="mt-10 text-center text-sm text-white/70">
+                Dès votre inscription (par mail, Google ou Facebook), vous
+                recevrez un e-mail pour valider votre compte.
+            </div>
+
+            <div className="mt-12 text-center">
+                <p className="font-serif text-2xl font-semibold text-white">
+                    Ou par
+                </p>
+
+                <div className="mt-6 flex flex-col gap-4">
+                    <SocialAuthButton provider="google">
+                        S’inscrire avec Google
+                    </SocialAuthButton>
+                    <SocialAuthButton provider="facebook">
+                        S’inscrire avec Facebook
+                    </SocialAuthButton>
                 </div>
-            </form>
-        </GuestLayout>
+            </div>
+
+            <p className="mt-12 text-center text-sm text-white/80">
+                Déjà inscrit ?{' '}
+                <Link
+                    href={route('login')}
+                    className="font-semibold text-white hover:text-brand-sand"
+                >
+                    Connectez-vous !
+                </Link>
+            </p>
+        </AuthLayout>
     );
 }
