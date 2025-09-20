@@ -87,6 +87,7 @@ class LoginRequest extends FormRequest
     protected function maxAttempts(): int
     {
         return FortifyLimiter::maxAttempts('login', 5, 1);
+
     }
 
     protected function decaySeconds(): int
