@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\Controller;
+use App\Support\FortifyLimiter;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class RegisteredUserController extends Controller
         $this->ensureIsNotRateLimited($request);
 
         $key = $this->registerThrottleKey($request);
-        $decay = max(1, (int) config('fortify.limiters.register.decay_minutes', 5)) * 60;
+        $decay = FortifyLimiter::decaySeconds('register', 3, 5);
 
         RateLimiter::hit($key, $decay);
 
@@ -50,7 +51,7 @@ class RegisteredUserController extends Controller
     protected function ensureIsNotRateLimited(Request $request): void
     {
         $key = $this->registerThrottleKey($request);
-        $maxAttempts = max(1, (int) config('fortify.limiters.register.max_attempts', 3));
+        $maxAttempts = FortifyLimiter::maxAttempts('register', 3, 5);
 
         if (! RateLimiter::tooManyAttempts($key, $maxAttempts)) {
             return;

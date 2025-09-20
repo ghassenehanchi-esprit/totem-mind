@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Support\FortifyLimiter;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -85,11 +86,12 @@ class LoginRequest extends FormRequest
 
     protected function maxAttempts(): int
     {
-        return max(1, (int) config('fortify.limiters.login.max_attempts', 5));
+        return FortifyLimiter::maxAttempts('login', 5, 1);
+
     }
 
     protected function decaySeconds(): int
     {
-        return max(1, (int) config('fortify.limiters.login.decay_minutes', 1)) * 60;
+        return FortifyLimiter::decaySeconds('login', 5, 1);
     }
 }

@@ -9,15 +9,19 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Support\FortifyLimiter;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware('guest')->group(function () {
+$registerThrottleKey = FortifyLimiter::key('register', 3, 5);
+$loginThrottleKey = FortifyLimiter::key('login', 5, 1);
+
+Route::middleware('guest')->group(function () use ($registerThrottleKey, $loginThrottleKey) {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store'])
-        ->middleware('throttle:'.config('fortify.limiters.register.key', 'register'));
+        ->middleware('throttle:'.$registerThrottleKey);
 
     Route::get('inscription-terminee', function () {
         return Inertia::render('Auth/RegistrationComplete');
@@ -27,7 +31,7 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
-        ->middleware('throttle:'.config('fortify.limiters.login.key', 'login'));
+        ->middleware('throttle:'.$loginThrottleKey);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
