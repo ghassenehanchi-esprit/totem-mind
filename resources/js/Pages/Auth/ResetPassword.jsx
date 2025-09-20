@@ -2,13 +2,13 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
-        email: email,
+        email: email ?? '',
         password: '',
         password_confirmation: '',
     });
@@ -21,74 +21,131 @@ export default function ResetPassword({ token, email }) {
         });
     };
 
+    const asideContent = (
+        <div className="flex flex-col items-center text-center text-white">
+            <img
+                src="/images/palette.png"
+                alt="Palette de couleurs Totem"
+                className="w-full max-w-sm"
+            />
+
+            <p className="mt-10 max-w-sm text-lg text-white/80">
+                Choisissez un nouveau mot de passe sécurisé pour continuer vos
+                explorations dans l’univers Totem Mind.
+            </p>
+        </div>
+    );
+
     return (
-        <GuestLayout>
-            <Head title="Reset Password" />
+        <AuthLayout
+            aside={asideContent}
+            asideClassName="bg-brand-midnight"
+            backgroundClassName="bg-brand-ocean"
+            footerVariant="light"
+        >
+            <Head title="Réinitialisation du mot de passe" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
+            <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/10 backdrop-blur">
+                <div className="text-center">
+                    <h1 className="text-4xl font-semibold text-white">
+                        Définir un nouveau mot de passe
+                    </h1>
+                    <p className="mt-4 text-sm text-white/70">
+                        Saisissez votre adresse mail puis votre nouveau mot de
+                        passe pour sécuriser votre compte.
+                    </p>
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <form className="mt-10 space-y-7" onSubmit={submit}>
+                    <div>
+                        <InputLabel
+                            htmlFor="email"
+                            value="Adresse mail"
+                            variant="brand"
+                        />
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            variant="brand"
+                            placeholder="nom@exemple.com"
+                            autoComplete="email"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                        />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                        <InputError
+                            message={errors.email}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                    <div>
+                        <InputLabel
+                            htmlFor="password"
+                            value="Nouveau mot de passe"
+                            variant="brand"
+                        />
 
-                    <TextInput
-                        type="password"
-                        id="password_confirmation"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                    />
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            variant="brand"
+                            autoComplete="new-password"
+                            isFocused
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                        />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                        <InputError
+                            message={errors.password}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
+                    <div>
+                        <InputLabel
+                            htmlFor="password_confirmation"
+                            value="Confirmation"
+                            variant="brand"
+                        />
+
+                        <TextInput
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            variant="brand"
+                            autoComplete="new-password"
+                            onChange={(e) =>
+                                setData('password_confirmation', e.target.value)
+                            }
+                            required
+                        />
+
+                        <InputError
+                            message={errors.password_confirmation}
+                            variant="brand"
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <PrimaryButton
+                        type="submit"
+                        variant="brand"
+                        disabled={processing}
+                        className="w-full"
+                    >
+                        Enregistrer le nouveau mot de passe
                     </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                </form>
+            </div>
+        </AuthLayout>
     );
 }
