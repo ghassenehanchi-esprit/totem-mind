@@ -21,11 +21,18 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'birthdate' => now()->subYears(20)->toDateString(),
             'password' => 'password',
             'password_confirmation' => 'password',
+            'captcha' => true,
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('register.complete'));
+        $this->assertGuest();
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'test@example.com',
+            'birthdate' => now()->subYears(20)->toDateString(),
+        ]);
     }
 }
