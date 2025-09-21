@@ -9,19 +9,23 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Support\FortifyLimiter;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-$registerThrottleKey = FortifyLimiter::key('register', 3, 5);
-$loginThrottleKey = FortifyLimiter::key('login', 5, 1);
+$registerMaxAttempts = max(1, (int) config('auth.throttle.register.max_attempts', 3));
+$registerDecayMinutes = max(1, (int) config('auth.throttle.register.decay_minutes', 5));
+$loginMaxAttempts = max(1, (int) config('auth.throttle.login.max_attempts', 5));
+$loginDecayMinutes = max(1, (int) config('auth.throttle.login.decay_minutes', 1));
 
-Route::middleware('guest')->group(function () use ($registerThrottleKey, $loginThrottleKey) {
+$registerThrottle = $registerMaxAttempts.','.$registerDecayMinutes;
+$loginThrottle = $loginMaxAttempts.','.$loginDecayMinutes;
+
+Route::middleware('guest')->group(function () use ($registerThrottle, $loginThrottle) {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store'])
-        ->middleware('throttle:'.$registerThrottleKey);
+        ->middleware('throttle:'.$registerThrottle);
 
     Route::get('inscription-terminee', function () {
         return Inertia::render('Auth/RegistrationComplete');
@@ -31,7 +35,7 @@ Route::middleware('guest')->group(function () use ($registerThrottleKey, $loginT
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
-        ->middleware('throttle:'.$loginThrottleKey);
+        ->middleware('throttle:'.$loginThrottle);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

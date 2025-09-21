@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Auth\CreateNewUser;
 use App\Http\Controllers\Controller;
-use App\Support\FortifyLimiter;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Fortify;
 
 class RegisteredUserController extends Controller
 {
@@ -24,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Fortify::renderRegisterView($request);
+        return Inertia::render('Auth/Register');
     }
 
     /**
@@ -35,9 +34,9 @@ class RegisteredUserController extends Controller
         $this->ensureIsNotRateLimited($request);
 
         $key = $this->registerThrottleKey($request);
-        $decay = FortifyLimiter::decaySeconds('register', 3, 5);
+        $decayMinutes = (int) config('auth.throttle.register.decay_minutes', 5);
 
-        RateLimiter::hit($key, $decay);
+        RateLimiter::hit($key, max(1, $decayMinutes) * 60);
 
         $user = $this->creator->create($request->all());
 
@@ -51,9 +50,9 @@ class RegisteredUserController extends Controller
     protected function ensureIsNotRateLimited(Request $request): void
     {
         $key = $this->registerThrottleKey($request);
-        $maxAttempts = FortifyLimiter::maxAttempts('register', 3, 5);
+        $maxAttempts = (int) config('auth.throttle.register.max_attempts', 3);
 
-        if (! RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+        if (! RateLimiter::tooManyAttempts($key, max(1, $maxAttempts))) {
             return;
         }
 

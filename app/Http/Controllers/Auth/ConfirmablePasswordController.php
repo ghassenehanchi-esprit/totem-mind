@@ -7,8 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Fortify;
 
 class ConfirmablePasswordController extends Controller
 {
@@ -17,7 +17,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function show(Request $request): Response
     {
-        return Fortify::renderConfirmPasswordView($request);
+        return Inertia::render('Auth/ConfirmPassword');
     }
 
     /**
