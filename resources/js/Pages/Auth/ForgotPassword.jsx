@@ -1,100 +1,116 @@
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
+    const [requestSent, setRequestSent] = useState(Boolean(status));
+
+    useEffect(() => {
+        setRequestSent(Boolean(status));
+    }, [status]);
 
     const submit = (e) => {
         e.preventDefault();
+        setRequestSent(true);
 
-        post(route('password.email'));
+        post(route('password.email'), {
+            onSuccess: () => {
+                setData('email', '');
+            },
+            onError: () => {
+                setRequestSent(false);
+            },
+        });
     };
-
-    const asideContent = (
-        <div className="flex flex-col items-center text-center text-white">
-            <img
-                src="/images/paysage-bleu.png"
-                alt="Illustration d'un paysage nocturne"
-                className="w-full max-w-sm"
-            />
-
-            <p className="mt-10 max-w-sm text-lg text-white/80">
-                Recevez un lien sécurisé pour réinitialiser votre mot de passe
-                et reprendre votre parcours Totem Mind en toute sérénité.
-            </p>
-        </div>
-    );
 
     return (
         <AuthLayout
-            aside={asideContent}
-            asideClassName="bg-brand-midnight"
-            backgroundClassName="bg-brand-ocean"
+            backgroundClassName="bg-brand-midnight"
+            containerClassName="items-center justify-center"
+            contentWrapperClassName="flex flex-col items-center gap-12 px-6 py-16 text-center"
+            showLogo={false}
             footerVariant="light"
         >
-            <Head title="Mot de passe oublié" />
+            <Head title="Demander un nouveau mot de passe" />
 
-            <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/10 backdrop-blur">
-                <div className="text-center">
-                    <h1 className="text-4xl font-semibold text-white">
-                        Mot de passe oublié
-                    </h1>
-                    <p className="mt-4 text-sm text-white/70">
-                        Indiquez votre adresse mail et nous vous enverrons un
-                        lien pour définir un nouveau mot de passe.
-                    </p>
-                </div>
+            <ApplicationLogo className="h-20 w-auto" />
 
-                {status && (
-                    <div className="mt-6 rounded-full bg-emerald-400/20 px-6 py-3 text-center text-sm font-semibold text-emerald-100">
-                        {status}
-                    </div>
-                )}
+            <img
+                src="/images/renard-blanc.png"
+                alt="Illustration d'un renard"
+                className="w-full max-w-xs"
+            />
 
-                <form className="mt-10 space-y-7" onSubmit={submit}>
-                    <div>
-                        <InputLabel
-                            htmlFor="email"
-                            value="Adresse mail"
-                            variant="brand"
-                        />
+            <h1 className="text-3xl font-semibold text-white md:text-4xl">
+                Demander un nouveau mot de passe
+            </h1>
 
-                        <TextInput
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={data.email}
-                            variant="brand"
-                            placeholder="nom@exemple.com"
-                            autoComplete="email"
-                            isFocused
-                            onChange={(e) => setData('email', e.target.value)}
-                            required
-                        />
-
-                        <InputError
-                            message={errors.email}
-                            variant="brand"
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <PrimaryButton
-                        type="submit"
-                        variant="brand"
-                        disabled={processing}
-                        className="w-full"
+            <div className="w-full max-w-xl rounded-[2.5rem] bg-white/10 p-10 shadow-2xl shadow-black/20 backdrop-blur">
+                {requestSent ? (
+                    <p
+                        className="text-center text-lg leading-relaxed text-white"
+                        role="status"
                     >
-                        Envoyer le lien de réinitialisation
-                    </PrimaryButton>
-                </form>
+                        Si cette adresse mail est enregistrée sur notre site, vous allez
+                        recevoir un mail de réinitialisation dans quelques minutes.
+                        Pensez à vérifier vos courriers indésirables !
+                    </p>
+                ) : (
+                    <form className="space-y-6" onSubmit={submit}>
+                        <div className="text-left">
+                            <InputLabel
+                                htmlFor="email"
+                                value="Adresse mail"
+                                variant="brand"
+                                className="sr-only"
+                            />
+
+                            <TextInput
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={data.email}
+                                variant="brand"
+                                placeholder="Adresse mail"
+                                autoComplete="email"
+                                isFocused
+                                onChange={(e) => setData('email', e.target.value)}
+                                required
+                                className="bg-white text-brand-midnight placeholder:text-brand-midnight/60"
+                            />
+
+                            <InputError
+                                message={errors.email}
+                                variant="brand"
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <PrimaryButton
+                            type="submit"
+                            variant="brand"
+                            disabled={processing}
+                        >
+                            Recevoir un mail pour réinitialiser le mot de passe
+                        </PrimaryButton>
+                    </form>
+                )}
             </div>
+
+            <Link
+                href={route('login')}
+                className="text-sm font-semibold text-white transition-colors hover:text-brand-sand"
+            >
+                Essayer de vous reconnecter
+            </Link>
         </AuthLayout>
     );
 }
