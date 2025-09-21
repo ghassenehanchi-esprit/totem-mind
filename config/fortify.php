@@ -8,6 +8,11 @@ return [
     'middleware' => ['web'],
 
     'limiters' => [
+        'login' => 'login',
+        'register' => 'register',
+    ],
+
+    'throttle' => [
         'login' => [
             'key' => 'login',
             'max_attempts' => env('FORTIFY_LOGIN_MAX_ATTEMPTS', 5),
