@@ -12,6 +12,11 @@ class Jetstream
      */
     protected static string $stack = 'livewire';
 
+    /**
+     * Indicates if Jetstream should register its default routes.
+     */
+    public static bool $registersRoutes = true;
+
     public static function useInertia(): void
     {
         static::$stack = 'inertia';
@@ -72,5 +77,15 @@ class Jetstream
     public static function feature(string $feature, mixed $default = null): mixed
     {
         return Arr::get(config('jetstream.features', []), $feature, $default);
+    }
+
+    public static function ignoreRoutes(): void
+    {
+        static::$registersRoutes = false;
+    }
+
+    public static function shouldRegisterRoutes(): bool
+    {
+        return static::$registersRoutes;
     }
 }
