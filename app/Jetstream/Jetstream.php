@@ -155,13 +155,6 @@ class Jetstream
         return [false, null];
     }
 
-    public static function ignoreRoutes(): void
-    {
-        static::$registersRoutes = false;
-    }
 
-    public static function shouldRegisterRoutes(): bool
-    {
-        return static::$registersRoutes;
-    }
+
 }
