@@ -6,7 +6,9 @@ use App\Support\FortifyLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -19,6 +21,37 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::ignoreRoutes();
+
+        Fortify::loginView(function (Request $request) {
+            return Inertia::render('Auth/Login', [
+                'status' => $request->session()->get('status'),
+                'canResetPassword' => Route::has('password.request'),
+                'canRegister' => Route::has('register'),
+            ]);
+        });
+
+        Fortify::registerView(fn (Request $request) => Inertia::render('Auth/Register'));
+
+        Fortify::requestPasswordResetLinkView(function (Request $request) {
+            return Inertia::render('Auth/ForgotPassword', [
+                'status' => $request->session()->get('status'),
+            ]);
+        });
+
+        Fortify::resetPasswordView(function (Request $request) {
+            return Inertia::render('Auth/ResetPassword', [
+                'token' => $request->route('token'),
+                'email' => $request->query('email'),
+            ]);
+        });
+
+        Fortify::confirmPasswordView(fn (Request $request) => Inertia::render('Auth/ConfirmPassword'));
+
+        Fortify::verifyEmailView(function (Request $request) {
+            return Inertia::render('Auth/VerifyEmail', [
+                'status' => $request->session()->get('status'),
+            ]);
+        });
 
         $this->configureRateLimiting();
     }
