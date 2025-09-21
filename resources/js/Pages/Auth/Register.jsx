@@ -103,7 +103,7 @@ export default function Register() {
     };
 
     const asideContent = (
-        <div className="flex flex-col items-center text-center text-white">
+        <div className="flex flex-col items-center text-center text-white lg:self-start">
             <img
                 src="/images/loup-blanc.png"
                 alt="Illustration d'un loup"
@@ -120,13 +120,13 @@ export default function Register() {
     return (
         <AuthLayout
             aside={asideContent}
-            asideClassName="bg-brand-midnight"
+            asideClassName="bg-brand-midnight lg:items-start"
             footerVariant="light"
             showLogo={false}
         >
             <Head title="Inscription" />
 
-            <div className="mb-10 mt-12 flex justify-start">
+            <div className="mb-10 mt-12 flex justify-center">
                 <ApplicationLogo className="h-16 w-auto" />
             </div>
 

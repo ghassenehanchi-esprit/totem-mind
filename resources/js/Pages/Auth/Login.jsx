@@ -52,7 +52,7 @@ export default function Login({ status, canResetPassword, canRegister }) {
         >
             <Head title="Connexion" />
 
-            <div className="mb-10 mt-12 flex justify-start">
+            <div className="mb-10 mt-12 flex justify-center">
                 <ApplicationLogo className="h-16 w-auto" />
             </div>
 
