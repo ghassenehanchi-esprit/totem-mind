@@ -153,6 +153,31 @@ class Jetstream
         }
 
         return [false, null];
+
+    }
+
+    /**
+     * Locate a feature entry in the configuration.
+     */
+    protected static function featureEntry(string $feature): array
+    {
+        $features = config('jetstream.features', []);
+
+        if (array_key_exists($feature, $features)) {
+            return [true, $features[$feature]];
+        }
+
+        foreach ($features as $value) {
+            if ($value === $feature) {
+                return [true, true];
+            }
+
+            if (is_array($value) && array_key_exists($feature, $value)) {
+                return [true, $value[$feature]];
+            }
+        }
+
+        return [false, null];
     }
 
 

@@ -27,6 +27,7 @@ class Fortify
         'resetPassword' => null,
         'confirmPassword' => null,
         'verifyEmail' => null,
+        'twoFactorChallenge' => null,
     ];
 
     /**
@@ -62,6 +63,11 @@ class Fortify
     public static function verifyEmailView(callable $callback): void
     {
         static::$viewCallbacks['verifyEmail'] = $callback;
+    }
+
+    public static function twoFactorChallengeView(callable $callback): void
+    {
+        static::$viewCallbacks['twoFactorChallenge'] = $callback;
     }
 
     public static function viewPrefix(string $prefix): void
@@ -105,6 +111,11 @@ class Fortify
     public static function renderVerifyEmailView(Request $request): Response
     {
         return static::render('verifyEmail', $request);
+    }
+
+    public static function renderTwoFactorChallengeView(Request $request): Response
+    {
+        return static::render('twoFactorChallenge', $request);
     }
 
     public static function hasView(string $key): bool
