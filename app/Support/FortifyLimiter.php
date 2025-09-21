@@ -17,7 +17,11 @@ class FortifyLimiter
             return static::$cache[$cacheKey];
         }
 
-        $config = config("fortify.limiters.{$name}");
+        $config = config("fortify.throttle.{$name}");
+
+        if (! is_array($config) || $config === []) {
+            $config = config("fortify.limiters.{$name}");
+        }
 
         if (is_array($config)) {
             return static::$cache[$cacheKey] = [

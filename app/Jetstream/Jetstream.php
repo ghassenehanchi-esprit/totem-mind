@@ -12,6 +12,11 @@ class Jetstream
      */
     protected static string $stack = 'livewire';
 
+    /**
+     * Indicates if Jetstream should register its default routes.
+     */
+    public static bool $registersRoutes = true;
+
     public static function useInertia(): void
     {
         static::$stack = 'inertia';
@@ -66,11 +71,87 @@ class Jetstream
 
     public static function hasFeature(string $feature): bool
     {
-        return in_array($feature, config('jetstream.features', []), true);
+        [$found, $value] = static::featureEntry($feature);
+
+        if (! $found) {
+            return false;
+        }
+
+        return match (true) {
+            is_bool($value) => $value,
+            is_array($value) => true,
+            $value === null => false,
+            default => (bool) $value,
+        };
     }
 
     public static function feature(string $feature, mixed $default = null): mixed
     {
-        return Arr::get(config('jetstream.features', []), $feature, $default);
+        [$found, $value] = static::featureEntry($feature);
+
+        if (! $found) {
+            return $default;
+        }
+
+        return $value ?? $default;
+    }
+
+    public static function hasTermsAndPrivacyPolicyFeature(): bool
+    {
+        return static::hasFeature('terms-and-privacy-policy');
+    }
+
+    public static function hasProfilePhotoFeatures(): bool
+    {
+        return static::hasFeature('profile-photos');
+    }
+
+    public static function hasApiFeatures(): bool
+    {
+        return static::hasFeature('api');
+    }
+
+    public static function hasAccountDeletionFeatures(): bool
+    {
+        return static::hasFeature('account-deletion');
+    }
+
+    public static function hasTeamFeatures(): bool
+    {
+        return static::hasFeature('teams');
+    }
+
+    public static function ignoreRoutes(): void
+    {
+        static::$registersRoutes = false;
+    }
+
+    public static function shouldRegisterRoutes(): bool
+    {
+        return static::$registersRoutes;
+    }
+
+    /**
+     * Locate a feature entry in the configuration.
+     */
+    protected static function featureEntry(string $feature): array
+    {
+        $features = config('jetstream.features', []);
+
+        if (array_key_exists($feature, $features)) {
+            return [true, $features[$feature]];
+        }
+
+        foreach ($features as $value) {
+            if ($value === $feature) {
+                return [true, true];
+            }
+
+            if (is_array($value) && array_key_exists($feature, $value)) {
+                return [true, $value[$feature]];
+            }
+        }
+
+        return [false, null];
     }
 }

@@ -5,6 +5,8 @@ namespace Laravel\Fortify;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
+use function response;
+use function view;
 
 class Fortify
 {
@@ -25,7 +27,13 @@ class Fortify
         'resetPassword' => null,
         'confirmPassword' => null,
         'verifyEmail' => null,
+        'twoFactorChallenge' => null,
     ];
+
+    /**
+     * The prefix applied to Fortify view names when callbacks are not provided.
+     */
+    protected static string $viewPrefix = '';
 
     public static function loginView(callable $callback): void
     {
@@ -55,6 +63,24 @@ class Fortify
     public static function verifyEmailView(callable $callback): void
     {
         static::$viewCallbacks['verifyEmail'] = $callback;
+    }
+
+    public static function twoFactorChallengeView(callable $callback): void
+    {
+        static::$viewCallbacks['twoFactorChallenge'] = $callback;
+    }
+
+    public static function viewPrefix(string $prefix): void
+    {
+        $normalized = trim($prefix);
+
+        if ($normalized === '') {
+            static::$viewPrefix = '';
+
+            return;
+        }
+
+        static::$viewPrefix = rtrim($normalized, '.').'.';
     }
 
     public static function renderLoginView(Request $request): Response
@@ -87,6 +113,11 @@ class Fortify
         return static::render('verifyEmail', $request);
     }
 
+    public static function renderTwoFactorChallengeView(Request $request): Response
+    {
+        return static::render('twoFactorChallenge', $request);
+    }
+
     public static function hasView(string $key): bool
     {
         return isset(static::$viewCallbacks[$key]) && is_callable(static::$viewCallbacks[$key]);
@@ -106,10 +137,18 @@ class Fortify
     {
         $callback = static::$viewCallbacks[$key] ?? null;
 
-        if (! is_callable($callback)) {
-            throw new InvalidArgumentException("Fortify view [{$key}] has not been defined.");
+        if (is_callable($callback)) {
+            return value($callback, $request);
         }
 
-        return value($callback, $request);
+        if (static::$viewPrefix !== '') {
+            $view = static::$viewPrefix.$key;
+
+            if (view()->exists($view)) {
+                return response()->view($view, ['request' => $request]);
+            }
+        }
+
+        throw new InvalidArgumentException("Fortify view [{$key}] has not been defined.");
     }
 }
