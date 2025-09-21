@@ -1,3 +1,4 @@
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -44,11 +45,16 @@ export default function Login({ status, canResetPassword, canRegister }) {
     return (
         <AuthLayout
             aside={asideContent}
-            asideClassName="bg-brand-ocean"
-            backgroundClassName="bg-brand-midnight"
+            asideClassName="bg-brand-midnight"
+            backgroundClassName="bg-brand-ocean"
             footerVariant="light"
+            showLogo={false}
         >
             <Head title="Connexion" />
+
+            <div className="mb-10 mt-12 flex justify-start">
+                <ApplicationLogo className="h-16 w-auto" />
+            </div>
 
             <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur">
                 <div className="text-center">
