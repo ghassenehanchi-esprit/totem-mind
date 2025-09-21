@@ -7,8 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Fortify;
 
 class PasswordResetLinkController extends Controller
 {
@@ -17,7 +17,9 @@ class PasswordResetLinkController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Fortify::renderRequestPasswordResetLinkView($request);
+        return Inertia::render('Auth/ForgotPassword', [
+            'status' => $request->session()->get('status'),
+        ]);
     }
 
     /**

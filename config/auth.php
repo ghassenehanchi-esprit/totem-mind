@@ -101,6 +101,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication Rate Limiting
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the maximum number of attempts and decay periods for
+    | throttling authentication related actions. These values are used when
+    | protecting login and registration requests from brute-force attacks.
+    |
+    */
+
+    'throttle' => [
+        'login' => [
+            'max_attempts' => env('AUTH_LOGIN_MAX_ATTEMPTS', 5),
+            'decay_minutes' => env('AUTH_LOGIN_DECAY_MINUTES', 1),
+        ],
+
+        'register' => [
+            'max_attempts' => env('AUTH_REGISTER_MAX_ATTEMPTS', 3),
+            'decay_minutes' => env('AUTH_REGISTER_DECAY_MINUTES', 5),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
