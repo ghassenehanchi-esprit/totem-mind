@@ -3,6 +3,7 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
+use App\Rules\RecaptchaToken;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -30,9 +31,10 @@ class CreateNewUser
                 'before_or_equal:'.now()->subYears(18)->toDateString(),
             ],
             'password' => $this->passwordRules(),
-            'captcha' => ['accepted'],
+            'captcha_token' => ['required', 'string', new RecaptchaToken()],
         ], [
             'birthdate.before_or_equal' => __('Vous devez avoir au moins 18 ans pour vous inscrire.'),
+            'captcha_token.required' => __('Veuillez confirmer que vous n’êtes pas un robot.'),
         ]);
 
         $validator->validate();
