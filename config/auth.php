@@ -124,6 +124,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Persistent Login Cookie
+    |--------------------------------------------------------------------------
+    |
+    | These options configure the "remember me" cookie that allows users to
+    | stay authenticated between sessions. The cookie is always transmitted
+    | securely (HTTPS only) and marked as HTTP only to prevent access from
+    | JavaScript running in the browser.
+    |
+    */
+
+    'remember' => [
+        'cookie' => [
+            'name' => env('AUTH_REMEMBER_COOKIE', 'totem_remember'),
+            'lifetime' => env('AUTH_REMEMBER_LIFETIME', 60 * 24 * 30),
+            'path' => env('AUTH_REMEMBER_COOKIE_PATH', env('SESSION_PATH', '/')),
+            'domain' => env('AUTH_REMEMBER_COOKIE_DOMAIN', env('SESSION_DOMAIN')),
+            'secure' => env('AUTH_REMEMBER_COOKIE_SECURE', true),
+            'http_only' => env('AUTH_REMEMBER_COOKIE_HTTP_ONLY', true),
+            'same_site' => env('AUTH_REMEMBER_COOKIE_SAME_SITE', env('SESSION_SAME_SITE', 'lax')),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
