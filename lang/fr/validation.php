@@ -152,7 +152,7 @@ return [
         'current_password' => 'mot de passe actuel',
         'name' => 'nom',
         'birthdate' => 'date de naissance',
-        'captcha' => 'case de validation',
+        'captcha_token' => 'vérification reCAPTCHA',
         'token' => 'jeton de réinitialisation',
     ],
 ];

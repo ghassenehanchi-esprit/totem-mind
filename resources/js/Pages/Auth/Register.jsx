@@ -1,5 +1,4 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -7,7 +6,7 @@ import SocialAuthButton from '@/Components/SocialAuthButton';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const strengthStyles = {
     faible: 'text-rose-200',
@@ -15,15 +14,31 @@ const strengthStyles = {
     fort: 'text-emerald-200',
 };
 
+const RECAPTCHA_SCRIPT_URL = 'https://www.google.com/recaptcha/api.js?render=explicit';
+
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        clearErrors,
+    } = useForm({
         name: '',
         email: '',
         birthdate: '',
         password: '',
         password_confirmation: '',
-        captcha: false,
+        captcha_token: '',
     });
+
+    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? '';
+    const recaptchaContainerRef = useRef(null);
+    const recaptchaWidgetId = useRef(null);
+    const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
+    const [captchaError, setCaptchaError] = useState('');
 
     const [isUnderage, setIsUnderage] = useState(false);
 
@@ -94,13 +109,136 @@ export default function Register() {
         setIsUnderage(age < 18);
     };
 
+    const resetRecaptcha = () => {
+        if (
+            typeof window !== 'undefined' &&
+            window.grecaptcha &&
+            recaptchaWidgetId.current !== null
+        ) {
+            window.grecaptcha.reset(recaptchaWidgetId.current);
+        }
+
+        setData('captcha_token', '');
+    };
+
     const submit = (e) => {
         e.preventDefault();
 
         post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => {
+                reset('password', 'password_confirmation', 'captcha_token');
+                resetRecaptcha();
+            },
         });
     };
+
+    useEffect(() => {
+        if (! siteKey) {
+            setCaptchaError(
+                'La clé reCAPTCHA est manquante. Veuillez contacter le support.'
+            );
+
+            return;
+        }
+
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        if (window.grecaptcha) {
+            setIsRecaptchaReady(true);
+
+            return;
+        }
+
+        const handleLoad = () => {
+            if (window.grecaptcha) {
+                setIsRecaptchaReady(true);
+            } else {
+                setCaptchaError(
+                    'Le service reCAPTCHA n’a pas pu être initialisé. Veuillez réessayer.'
+                );
+            }
+        };
+
+        const existingScript = document.querySelector(
+            `script[src="${RECAPTCHA_SCRIPT_URL}"]`
+        );
+
+        if (existingScript) {
+            existingScript.addEventListener('load', handleLoad);
+
+            if (existingScript.dataset.loaded === 'true') {
+                handleLoad();
+            }
+
+            return () => {
+                existingScript.removeEventListener('load', handleLoad);
+            };
+        }
+
+        const script = document.createElement('script');
+        script.src = RECAPTCHA_SCRIPT_URL;
+        script.async = true;
+        script.defer = true;
+        script.addEventListener('load', () => {
+            script.dataset.loaded = 'true';
+            handleLoad();
+        });
+        script.addEventListener('error', () => {
+            setCaptchaError(
+                'Le service reCAPTCHA n’a pas pu être chargé. Veuillez réessayer.'
+            );
+        });
+
+        document.body.appendChild(script);
+
+        return () => {
+            script.removeEventListener('load', handleLoad);
+        };
+    }, [siteKey]);
+
+    useEffect(() => {
+        if (
+            ! isRecaptchaReady ||
+            ! siteKey ||
+            ! recaptchaContainerRef.current ||
+            typeof window === 'undefined'
+        ) {
+            return;
+        }
+
+        window.grecaptcha.ready(() => {
+            if (recaptchaWidgetId.current !== null) {
+                return;
+            }
+
+            recaptchaWidgetId.current = window.grecaptcha.render(
+                recaptchaContainerRef.current,
+                {
+                    sitekey: siteKey,
+                    theme: 'dark',
+                    callback: (token) => {
+                        setCaptchaError('');
+                        setData('captcha_token', token ?? '');
+                        clearErrors('captcha_token');
+                    },
+                    'expired-callback': () => {
+                        setCaptchaError(
+                            'Le jeton reCAPTCHA a expiré. Veuillez recommencer.'
+                        );
+                        setData('captcha_token', '');
+                    },
+                    'error-callback': () => {
+                        setCaptchaError(
+                            'Une erreur est survenue avec reCAPTCHA. Veuillez réessayer.'
+                        );
+                        setData('captcha_token', '');
+                    },
+                }
+            );
+        });
+    }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
@@ -269,23 +407,17 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="flex items-center gap-3 rounded-full bg-white/10 px-5 py-4">
-                        <Checkbox
-                            id="captcha"
-                            name="captcha"
-                            checked={data.captcha}
-                            onChange={(e) =>
-                                setData('captcha', e.target.checked)
-                            }
-                            className="size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
+                    <div className="flex flex-col items-center">
+                        <div
+                            ref={recaptchaContainerRef}
+                            className="mx-auto flex min-h-[78px] items-center justify-center"
                         />
 
-                        <label
-                            htmlFor="captcha"
-                            className="text-sm text-white/90"
-                        >
-                            Je ne suis pas un robot
-                        </label>
+                        <InputError
+                            message={errors.captcha_token ?? captchaError}
+                            variant="brand"
+                            className="mt-2 text-center"
+                        />
                     </div>
 
                     <PrimaryButton
