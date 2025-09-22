@@ -50,6 +50,35 @@ class RecaptchaToken implements ValidationRule
 
         if (! ($response->json('success') ?? false)) {
             $fail(__('La vérification reCAPTCHA a échoué. Veuillez réessayer.'));
+
+            return;
+        }
+
+        $version = (string) config('services.recaptcha.version', 'v2_checkbox');
+
+        if ($version === 'v3') {
+            $score = $response->json('score');
+
+            if (! is_numeric($score)) {
+                $fail(__('La vérification reCAPTCHA a échoué. Veuillez réessayer.'));
+
+                return;
+            }
+
+            $threshold = (float) config('services.recaptcha.score_threshold', 0.5);
+
+            if ((float) $score < $threshold) {
+                $fail(__('La vérification reCAPTCHA a échoué. Veuillez réessayer.'));
+
+                return;
+            }
+
+            $expectedAction = (string) config('services.recaptcha.action', 'register');
+            $action = (string) $response->json('action', '');
+
+            if ($expectedAction !== '' && $action !== '' && $action !== $expectedAction) {
+                $fail(__('La vérification reCAPTCHA a échoué. Veuillez réessayer.'));
+            }
         }
     }
 }

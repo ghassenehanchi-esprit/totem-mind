@@ -23,7 +23,13 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'recaptcha' => [
+                'siteKey' => config('services.recaptcha.site_key'),
+                'version' => config('services.recaptcha.version'),
+                'action' => config('services.recaptcha.action'),
+            ],
+        ]);
     }
 
     /**
