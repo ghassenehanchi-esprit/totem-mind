@@ -27,6 +27,10 @@ Route::middleware('guest')->group(function () use ($registerThrottle, $loginThro
     Route::post('register', [RegisteredUserController::class, 'store'])
         ->middleware('throttle:'.$registerThrottle);
 
+    Route::get('notifications-email', function () {
+        return Inertia::render('Auth/EmailNotifications');
+    })->name('notifications.email');
+
     Route::get('inscription-terminee', function () {
         return Inertia::render('Auth/RegistrationComplete');
     })->name('register.complete');
