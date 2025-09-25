@@ -5,8 +5,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SocialAuthButton from '@/Components/SocialAuthButton';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const strengthStyles = {
     faible: 'text-rose-200',
@@ -14,9 +14,15 @@ const strengthStyles = {
     fort: 'text-emerald-200',
 };
 
-const RECAPTCHA_SCRIPT_URL = 'https://www.google.com/recaptcha/api.js?render=explicit';
+const RECAPTCHA_V2_SCRIPT_URL =
+    'https://www.google.com/recaptcha/api.js?render=explicit';
+
+const getRecaptchaV3ScriptUrl = (siteKey) =>
+    `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
 
 export default function Register() {
+    const { props } = usePage();
+    const recaptchaConfig = props.recaptcha ?? {};
     const {
         data,
         setData,
@@ -34,11 +40,69 @@ export default function Register() {
         captcha_token: '',
     });
 
-    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? '';
+    const recaptchaVersion = recaptchaConfig.version ?? 'v2_checkbox';
+    const recaptchaAction = recaptchaConfig.action ?? 'register';
+    const isRecaptchaV3 = recaptchaVersion === 'v3';
+    const siteKey =
+        (recaptchaConfig.siteKey ?? '') || import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? '';
     const recaptchaContainerRef = useRef(null);
     const recaptchaWidgetId = useRef(null);
     const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
     const [captchaError, setCaptchaError] = useState('');
+
+    const executeRecaptchaV3 = useCallback(() => {
+        return new Promise((resolve, reject) => {
+            if (! isRecaptchaV3) {
+                resolve('');
+
+                return;
+            }
+
+            if (! siteKey || typeof window === 'undefined' || ! window.grecaptcha) {
+                setCaptchaError(
+                    'Le service reCAPTCHA n’a pas pu être initialisé. Veuillez réessayer.'
+                );
+                setData('captcha_token', '');
+                reject(new Error('reCAPTCHA is not ready.'));
+
+                return;
+            }
+
+            window.grecaptcha.ready(() => {
+                window.grecaptcha
+                    .execute(siteKey, { action: recaptchaAction })
+                    .then((token) => {
+                        if (! token) {
+                            setCaptchaError(
+                                'La vérification reCAPTCHA a échoué. Veuillez réessayer.'
+                            );
+                            setData('captcha_token', '');
+                            reject(new Error('Empty reCAPTCHA token.'));
+
+                            return;
+                        }
+
+                        setCaptchaError('');
+                        setData('captcha_token', token);
+                        clearErrors('captcha_token');
+                        resolve(token);
+                    })
+                    .catch((error) => {
+                        setCaptchaError(
+                            'Le service reCAPTCHA n’a pas pu être exécuté. Veuillez réessayer.'
+                        );
+                        setData('captcha_token', '');
+                        reject(error);
+                    });
+            });
+        });
+    }, [
+        isRecaptchaV3,
+        siteKey,
+        recaptchaAction,
+        setData,
+        clearErrors,
+    ]);
 
     const [isUnderage, setIsUnderage] = useState(false);
 
@@ -109,7 +173,13 @@ export default function Register() {
         setIsUnderage(age < 18);
     };
 
-    const resetRecaptcha = () => {
+    const resetRecaptcha = useCallback(() => {
+        if (isRecaptchaV3) {
+            setData('captcha_token', '');
+
+            return;
+        }
+
         if (
             typeof window !== 'undefined' &&
             window.grecaptcha &&
@@ -119,10 +189,18 @@ export default function Register() {
         }
 
         setData('captcha_token', '');
-    };
+    }, [isRecaptchaV3, setData]);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+
+        if (isRecaptchaV3) {
+            try {
+                await executeRecaptchaV3();
+            } catch (error) {
+                return;
+            }
+        }
 
         post(route('register'), {
             onFinish: () => {
@@ -145,15 +223,21 @@ export default function Register() {
             return;
         }
 
-        if (window.grecaptcha) {
-            setIsRecaptchaReady(true);
-
-            return;
-        }
+        const scriptUrl = isRecaptchaV3
+            ? getRecaptchaV3ScriptUrl(siteKey)
+            : RECAPTCHA_V2_SCRIPT_URL;
 
         const handleLoad = () => {
             if (window.grecaptcha) {
                 setIsRecaptchaReady(true);
+
+                if (isRecaptchaV3) {
+                    executeRecaptchaV3().catch(() => {
+                        setCaptchaError(
+                            'Le service reCAPTCHA n’a pas pu être initialisé. Veuillez réessayer.'
+                        );
+                    });
+                }
             } else {
                 setCaptchaError(
                     'Le service reCAPTCHA n’a pas pu être initialisé. Veuillez réessayer.'
@@ -161,14 +245,20 @@ export default function Register() {
             }
         };
 
+        if (window.grecaptcha) {
+            handleLoad();
+
+            return;
+        }
+
         const existingScript = document.querySelector(
-            `script[src="${RECAPTCHA_SCRIPT_URL}"]`
+            `script[src="${scriptUrl}"]`
         );
 
         if (existingScript) {
             existingScript.addEventListener('load', handleLoad);
 
-            if (existingScript.dataset.loaded === 'true') {
+            if (existingScript.dataset.loaded === 'true' || window.grecaptcha) {
                 handleLoad();
             }
 
@@ -178,7 +268,7 @@ export default function Register() {
         }
 
         const script = document.createElement('script');
-        script.src = RECAPTCHA_SCRIPT_URL;
+        script.src = scriptUrl;
         script.async = true;
         script.defer = true;
         script.addEventListener('load', () => {
@@ -196,10 +286,11 @@ export default function Register() {
         return () => {
             script.removeEventListener('load', handleLoad);
         };
-    }, [siteKey]);
+    }, [siteKey, isRecaptchaV3, executeRecaptchaV3]);
 
     useEffect(() => {
         if (
+            isRecaptchaV3 ||
             ! isRecaptchaReady ||
             ! siteKey ||
             ! recaptchaContainerRef.current ||
@@ -238,7 +329,13 @@ export default function Register() {
                 }
             );
         });
-    }, [isRecaptchaReady, siteKey, clearErrors, setData]);
+    }, [
+        isRecaptchaV3,
+        isRecaptchaReady,
+        siteKey,
+        clearErrors,
+        setData,
+    ]);
 
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
@@ -408,10 +505,34 @@ export default function Register() {
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <div
-                            ref={recaptchaContainerRef}
-                            className="mx-auto flex min-h-[78px] items-center justify-center"
-                        />
+                        {isRecaptchaV3 ? (
+                            <p className="mx-auto max-w-xs text-center text-xs text-white/70">
+                                Ce site est protégé par reCAPTCHA et les{' '}
+                                <a
+                                    href="https://policies.google.com/privacy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-brand-sand underline decoration-dotted underline-offset-2"
+                                >
+                                    règles de confidentialité
+                                </a>{' '}
+                                et les{' '}
+                                <a
+                                    href="https://policies.google.com/terms"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-brand-sand underline decoration-dotted underline-offset-2"
+                                >
+                                    conditions d’utilisation
+                                </a>{' '}
+                                de Google s’appliquent.
+                            </p>
+                        ) : (
+                            <div
+                                ref={recaptchaContainerRef}
+                                className="mx-auto flex min-h-[78px] items-center justify-center"
+                            />
+                        )}
 
                         <InputError
                             message={errors.captcha_token ?? captchaError}

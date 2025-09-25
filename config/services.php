@@ -38,6 +38,9 @@ return [
     'recaptcha' => [
         'site_key' => env('RECAPTCHA_SITE_KEY', '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'),
         'secret_key' => env('RECAPTCHA_SECRET_KEY', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'),
+        'version' => env('RECAPTCHA_VERSION', 'v2_checkbox'),
+        'action' => env('RECAPTCHA_ACTION', 'register'),
+        'score_threshold' => env('RECAPTCHA_SCORE_THRESHOLD', 0.5),
     ],
 
 ];
