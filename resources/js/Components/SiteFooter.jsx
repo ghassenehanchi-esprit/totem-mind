@@ -12,9 +12,9 @@ const variantStyles = {
 };
 
 const footerLinks = [
-    { label: 'CGU', href: '#' },
-    { label: 'Politique de confidentialité', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'CGU', href: 'https://totemmind.app/cgu-mentions-legales/' },
+    { label: 'Politique de confidentialité', href: 'https://totemmind.app/politique-de-confidentialite/' },
+    { label: 'Contact', href: 'https://totemmind.app/contact/' },
 ];
 
 export default function SiteFooter({ className = '', variant = 'light' }) {
