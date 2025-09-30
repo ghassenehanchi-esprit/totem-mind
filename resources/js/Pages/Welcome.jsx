@@ -1,5 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import SiteFooter from '@/Components/SiteFooter';
+import LandingNavbar from '@/Components/LandingNavbar';
 
 const highlightSteps = [
     {
@@ -79,21 +80,7 @@ export default function Welcome({ auth }) {
         <>
             <Head title="Accueil" />
             <div className="flex min-h-screen flex-col bg-[#0b1a33] text-white">
-                <header className="border-b border-white/10 bg-[#0b1a33]/80">
-                    <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6">
-                        <Link href="/" className="flex items-center gap-2 text-white">
-                            <span className="text-xl font-semibold tracking-[0.6em]">TOTEM</span>
-                            <span className="-ml-3 text-sm font-light uppercase tracking-[0.5em]">mind</span>
-                        </Link>
-
-                        <Link
-                            href={ctaLink}
-                            className="text-sm font-semibold uppercase tracking-[0.45em] text-white transition hover:text-brand-ocean"
-                        >
-                            Accéder aux sondages
-                        </Link>
-                    </div>
-                </header>
+                <LandingNavbar ctaHref={ctaLink} />
 
                 <div className="relative isolate flex flex-1 items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 opacity-40">

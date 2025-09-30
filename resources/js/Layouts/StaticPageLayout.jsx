@@ -1,33 +1,10 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import SiteFooter from '@/Components/SiteFooter';
-import { Link } from '@inertiajs/react';
+import LandingNavbar from '@/Components/LandingNavbar';
 
 export default function StaticPageLayout({ title, lead, children, contentClassName = '' }) {
     return (
         <div className="flex min-h-screen flex-col bg-brand-cream text-brand-midnight">
-            <header className="border-b border-brand-sand/70 bg-white/80 backdrop-blur">
-                <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
-                    <Link href="/" className="flex items-center gap-4 text-brand-midnight">
-                        <ApplicationLogo className="h-14 w-auto" />
-
-                        <div className="flex flex-col">
-                            <span className="text-xs uppercase tracking-[0.4em] text-brand-ocean/70">
-                                Totem Mind
-                            </span>
-                            <span className="font-serif text-2xl text-brand-midnight">
-                                Univers des explorateurs
-                            </span>
-                        </div>
-                    </Link>
-
-                    <Link
-                        href={route('dashboard')}
-                        className="inline-flex items-center justify-center rounded-full border border-brand-ocean/20 bg-brand-midnight px-6 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white shadow-xl shadow-brand-midnight/20 transition-colors duration-200 hover:bg-brand-ocean focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-ocean/40"
-                    >
-                        Accéder aux sondages
-                    </Link>
-                </div>
-            </header>
+            <LandingNavbar ctaHref={route('dashboard')} />
 
             <main className="flex-1">
                 <div className="mx-auto w-full max-w-5xl px-6 py-16">
