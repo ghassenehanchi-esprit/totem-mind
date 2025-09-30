@@ -58,6 +58,7 @@ const highlightSteps = [
                 />
             </svg>
         ),
+
     },
 ];
 
@@ -69,6 +70,7 @@ const reasons = [
     {
         description:
             'Marre d’être viré d’un sondage après avoir passé de précieuses minutes à répondre sans rien recevoir en retour ? Sur Totem Mind, certains sondages vous donnent de mini récompenses même quand vous n’êtes pas sélectionné !',
+
     },
 ];
 
@@ -183,11 +185,13 @@ export default function Welcome({ auth }) {
                                         className="h-full rounded-xl border border-white/30 bg-white/5 px-8 py-10 text-left text-[15px] leading-relaxed text-white/90"
                                     >
                                         {reason.description}
+
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
+
                 </main>
 
                 <SiteFooter variant="light" />
