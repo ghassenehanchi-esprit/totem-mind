@@ -92,7 +92,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                     </div>
                 </aside>
 
-                <main className="flex flex-1 items-stretch bg-gradient-to-br from-[#0c2238] via-[#112c46] to-[#1b3f62] text-[#081b2e]">
+                <main className="relative flex flex-1 items-stretch bg-[#f6f3ec] text-[#081b2e]">
                     {children}
                 </main>
             </div>
