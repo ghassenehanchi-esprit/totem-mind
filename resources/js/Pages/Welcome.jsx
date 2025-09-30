@@ -61,51 +61,57 @@ export default function Welcome({ auth }) {
     return (
         <>
             <Head title="Accueil" />
-            <div className="flex min-h-screen flex-col bg-brand-midnight text-white">
-                <div className="relative isolate overflow-hidden bg-gradient-to-b from-brand-midnight via-[#172238] to-[#0f172a]">
+            <div className="flex min-h-screen flex-col bg-[#0b1a33] text-white">
+                <header className="border-b border-white/10 bg-[#0b1a33]/80">
+                    <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6">
+                        <Link href="/" className="flex items-center gap-2 text-white">
+                            <span className="text-xl font-semibold tracking-[0.6em]">TOTEM</span>
+                            <span className="-ml-3 text-sm font-light uppercase tracking-[0.5em]">mind</span>
+                        </Link>
+
+                        <Link
+                            href={ctaLink}
+                            className="text-sm font-semibold uppercase tracking-[0.45em] text-white transition hover:text-brand-ocean"
+                        >
+                            Accéder aux sondages
+                        </Link>
+                    </div>
+                </header>
+
+                <div className="relative isolate flex flex-1 items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 opacity-40">
                         <img
                             src="/images/paysage-bleu.png"
-                            alt="Illustration TotemMind"
-                            className="pointer-events-none h-full w-full object-cover object-right"
+                            alt="Fond TotemMind"
+                            className="h-full w-full object-cover"
                         />
                     </div>
 
-                    <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-16 px-6 pb-24 pt-12 sm:pt-16 lg:flex-row lg:items-center lg:gap-12">
-                        <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                                <Link href="/" className="flex items-center gap-3">
-                                    <img src="/images/Logo-blanc.png" alt="TotemMind" className="h-12 w-auto" />
-                                </Link>
+                    <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-16 lg:flex-row lg:items-end lg:gap-20 lg:py-24">
+                        <div className="max-w-xl space-y-8">
+                            <h1 className="font-serif text-4xl font-semibold leading-tight sm:text-5xl">
+                                Gagnez de l’argent via Paypal en répondant à des sondages rémunérés
+                                <span className="text-brand-ocean"> *</span>
+                            </h1>
 
-                                <Link
-                                    href={ctaLink}
-                                    className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/20"
-                                >
-                                    Accéder aux sondages
-                                </Link>
-                            </div>
+                            <Link
+                                href={ctaLink}
+                                className="inline-flex w-fit items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#0b1a33] shadow-lg shadow-black/20 transition hover:bg-white/90"
+                            >
+                                Recevez 1€ de bonus de bienvenue
+                            </Link>
 
-                            <div className="mt-12 max-w-xl">
-                                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white">
-                                    <span className="text-lg">✶</span> Recevez 1€ de bonus de bienvenue
-                                </span>
-                                <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight sm:text-5xl">
-                                    Gagnez de l’argent via Paypal en répondant à des sondages rémunérés
-                                </h1>
-                                <p className="mt-6 text-lg text-white/80">
-                                    TotemMind.app vous permet de partager votre opinion avec des marques qui vous ressemblent.
-                                    Répondez à des sondages sur mesure, cumulez vos gains en euros et transférez-les directement sur votre compte PayPal.
-                                </p>
-                            </div>
+                            <p className="text-sm text-white/70">
+                                * Vous ne deviendrez pas millionnaire, mais au moins, vous pourrez récupérer l’argent que vous venez de dépenser chez Starbucks.
+                            </p>
                         </div>
 
-                        <div className="relative flex-1">
-                            <div className="absolute -top-12 -right-6 h-32 w-32 rounded-full bg-brand-ocean/40 blur-3xl" aria-hidden="true" />
+                        <div className="relative flex flex-1 justify-center">
                             <img
-                                src="/images/element-08.png"
-                                alt="Motif Totem"
-                                className="mx-auto h-[420px] w-auto drop-shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
+                                src="/images/loup-blanc.png"
+                                alt="Illustration de loup TotemMind"
+                                className="h-auto w-[320px] sm:w-[360px] lg:w-[420px]"
+
                             />
                         </div>
                     </div>
