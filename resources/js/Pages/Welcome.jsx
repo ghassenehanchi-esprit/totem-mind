@@ -3,55 +3,74 @@ import SiteFooter from '@/Components/SiteFooter';
 
 const highlightSteps = [
     {
-        title: 'Inscrivez-vous en quelques minutes',
-        description:
-            'Créez votre compte TotemMind.app, complétez votre profil et commencez à recevoir des sondages adaptés à vos centres d’intérêt.',
+        title: 'Inscrivez-vous en une minute',
+        icon: (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="h-6 w-6"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+            </svg>
+        ),
     },
     {
-        title: 'Soyez récompensé en contribuant à l’avenir des entreprises',
-        description:
-            'Partagez vos opinions en toute simplicité, aidez les marques à progresser et transformez vos idées en décisions concrètes.',
+        title: 'Participez à une dizaine de sondages disponibles chaque jour',
+        icon: (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="h-6 w-6"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 5.25h16.5m-16.5 0h-.75m.75 0v15.75c0 .414.336.75.75.75h14.25a.75.75 0 0 0 .75-.75V5.25m-16.5 0V4.5A.75.75 0 0 1 4.5 3.75h15a.75.75 0 0 1 .75.75v.75m-5.25 3h-6m6 4.5h-6m3 4.5H9"
+                />
+            </svg>
+        ),
     },
     {
-        title: 'Transférez votre argent vers votre compte Paypal',
-        description:
-            'Convertissez vos gains en euros et récupérez-les à tout moment sur votre portefeuille PayPal en toute sécurité.',
+        title: 'Transférez votre argent vers Paypal dès 5€',
+        icon: (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="h-6 w-6"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 3v18m0 0 5.25-5.25M12 21l-5.25-5.25M5.625 9.75H4.5a1.5 1.5 0 1 0 0 3h1.125m12.75-3H19.5a1.5 1.5 0 1 1 0 3h-1.125"
+                />
+            </svg>
+        ),
+
     },
 ];
 
 const reasons = [
     {
-        title: 'Des sondages ciblés et rémunérés',
         description:
-            'Recevez uniquement des sondages pertinents qui correspondent à votre profil et profitez d’une rémunération immédiate pour chaque participation complétée.',
+            'Ici, vous ne gagnez ni des points, ni des cartes cadeaux. Vous gagnez de vrais euros qui arrivent sur votre compte PayPal (retrait dès 5€).',
     },
     {
-        title: 'Une communauté engagée',
         description:
-            'Rejoignez des milliers de répondants qui façonnent l’avenir des entreprises en donnant leur avis de manière constructive et authentique.',
-    },
-    {
-        title: 'Un accompagnement constant',
-        description:
-            'Notre équipe vous accompagne à chaque étape avec des conseils, des rappels et des astuces pour optimiser vos gains et votre expérience.',
-    },
-];
+            'Marre d’être viré d’un sondage après avoir passé de précieuses minutes à répondre sans rien recevoir en retour ? Sur Totem Mind, certains sondages vous donnent de mini récompenses même quand vous n’êtes pas sélectionné !',
 
-const reflectionPrompts = [
-    {
-        title: 'Combien de temps passez-vous…',
-        description:
-            'Dans les transports ? Dans les files d’attente ? Autant de moments disponibles pour répondre à des sondages courts et agréables.',
-    },
-    {
-        title: 'Par jour, par semaine, par mois, par année ?',
-        description:
-            'Avec TotemMind.app, vous choisissez votre rythme : répondez quand cela vous arrange et cumulez vos gains progressivement.',
-    },
-    {
-        title: 'Et si ce temps-là vous était rémunéré en donnant votre opinion ?',
-        description:
-            'Partagez votre point de vue, influencez les décisions des entreprises et soyez récompensé pour chaque contribution.',
     },
 ];
 
@@ -111,65 +130,68 @@ export default function Welcome({ auth }) {
                                 src="/images/loup-blanc.png"
                                 alt="Illustration de loup TotemMind"
                                 className="h-auto w-[320px] sm:w-[360px] lg:w-[420px]"
-
                             />
                         </div>
                     </div>
                 </div>
 
                 <main className="bg-brand-midnight">
-                    <section className="bg-[#101a2f] py-16">
+                    <section className="bg-[#f3f1eb] py-20 text-[#212d3a]">
                         <div className="mx-auto max-w-5xl px-6">
-                            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                                {highlightSteps.map((step) => (
-                                    <div
-                                        key={step.title}
-                                        className="rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-white/80 shadow-lg shadow-black/10"
-                                    >
-                                        <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                                        <p className="mt-4 leading-relaxed">{step.description}</p>
-                                    </div>
-                                ))}
+                            <div className="flex flex-col items-center gap-14">
+                                <div className="grid w-full gap-10 lg:grid-cols-3">
+                                    {highlightSteps.map((step, index) => (
+                                        <div
+                                            key={step.title}
+                                            className={`flex flex-col items-center gap-6 text-center lg:px-10 ${
+                                                index !== highlightSteps.length - 1
+                                                    ? 'lg:border-r lg:border-[#d9d6cf]'
+                                                    : ''
+                                            }`}
+                                        >
+                                            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#d9d6cf] bg-white text-[#212d3a]">
+                                                {step.icon}
+                                            </div>
+                                            <p className="font-serif text-lg leading-relaxed">{step.title}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="w-full rounded-full bg-[#e3dfd6] px-10 py-5 text-center">
+                                    <p className="font-serif text-base tracking-wide text-[#212d3a]/80">
+                                        Soyez récompensé en contribuant à l’avenir des entreprises et en partageant votre opinion
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </section>
 
-                    <section className="bg-[#152139] py-16">
-                        <div className="mx-auto max-w-5xl px-6 text-center">
-                            <h2 className="font-serif text-3xl font-semibold text-white">
-                                Pourquoi choisir TotemMind.app
-                            </h2>
-                            <p className="mt-4 text-white/70">
-                                Soyez récompensé en contribuant à l’avenir des entreprises et en partageant votre opinion.
-                            </p>
+                    <section className="bg-[#102a46] py-24 text-white">
+                        <div className="mx-auto max-w-4xl px-6 text-center">
+                            <div className="flex justify-center">
+                                <img
+                                    src="/images/element-08.png"
+                                    alt="Illustration Totem"
+                                    className="h-20 w-20"
+                                />
+                            </div>
 
-                            <div className="mt-12 grid gap-8 lg:grid-cols-3">
+                            <h2 className="mt-10 font-serif text-3xl font-semibold">Pourquoi choisir TotemMind.app</h2>
+
+                            <div className="mt-12 grid gap-8 md:grid-cols-2">
                                 {reasons.map((reason) => (
                                     <div
-                                        key={reason.title}
-                                        className="flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 text-left text-sm text-white/80 shadow-lg shadow-black/10"
+                                        key={reason.description}
+                                        className="h-full rounded-xl border border-white/30 bg-white/5 px-8 py-10 text-left text-[15px] leading-relaxed text-white/90"
                                     >
-                                        <h3 className="text-lg font-semibold text-white">{reason.title}</h3>
-                                        <p className="leading-relaxed">{reason.description}</p>
+                                        {reason.description}
+
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    <section className="bg-[#101a2f] py-16">
-                        <div className="mx-auto max-w-4xl space-y-8 px-6 text-center">
-                            {reflectionPrompts.map((prompt) => (
-                                <div
-                                    key={prompt.title}
-                                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-8 text-white/80 shadow-lg shadow-black/10"
-                                >
-                                    <h3 className="font-serif text-2xl font-semibold text-white">{prompt.title}</h3>
-                                    <p className="mt-4 text-base leading-relaxed">{prompt.description}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
                 </main>
 
                 <SiteFooter variant="light" />
