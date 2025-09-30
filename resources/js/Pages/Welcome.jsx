@@ -188,7 +188,6 @@ export default function Welcome({ auth }) {
                             </div>
                         </div>
                     </section>
-
                     <section className="bg-[#f3f1eb] py-24 text-[#212d3a]">
                         <div className="mx-auto max-w-3xl px-6">
                             <div className="border-l-4 border-[#212d3a]/30 pl-8">
