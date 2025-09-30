@@ -58,7 +58,6 @@ const highlightSteps = [
                 />
             </svg>
         ),
-
     },
 ];
 
@@ -70,7 +69,6 @@ const reasons = [
     {
         description:
             'Marre d’être viré d’un sondage après avoir passé de précieuses minutes à répondre sans rien recevoir en retour ? Sur Totem Mind, certains sondages vous donnent de mini récompenses même quand vous n’êtes pas sélectionné !',
-
     },
 ];
 
@@ -185,13 +183,35 @@ export default function Welcome({ auth }) {
                                         className="h-full rounded-xl border border-white/30 bg-white/5 px-8 py-10 text-left text-[15px] leading-relaxed text-white/90"
                                     >
                                         {reason.description}
-
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
+                    <section className="bg-[#f3f1eb] py-24 text-[#212d3a]">
+                        <div className="mx-auto max-w-3xl px-6">
+                            <div className="border-l-4 border-[#212d3a]/30 pl-8">
+                                <h2 className="font-serif text-3xl font-semibold leading-tight">
+                                    Combien de temps passez-vous...
+                                </h2>
 
+                                <div className="mt-6 space-y-3 font-serif text-lg leading-relaxed">
+                                    <p>Dans les transports ? Dans les files d’attente ?</p>
+                                    <p>Par jour, par semaine, par mois, par année ?</p>
+                                    <p>
+                                        Et si ce temps-là vous était rémunéré en donnant votre opinion ?
+                                    </p>
+                                </div>
+
+                                <Link
+                                    href={ctaLink}
+                                    className="mt-10 inline-flex items-center justify-center rounded-full bg-[#0b1a33] px-8 py-3 text-sm font-semibold uppercase tracking-[0.25em] text-white shadow-md shadow-black/20 transition hover:bg-[#0b1a33]/90"
+                                >
+                                    Commencez avec 1€ de bonus de bienvenue
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
                 </main>
 
                 <SiteFooter variant="light" />
