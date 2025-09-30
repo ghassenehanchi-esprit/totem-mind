@@ -111,6 +111,7 @@ export default function Welcome({ auth }) {
                                 src="/images/loup-blanc.png"
                                 alt="Illustration de loup TotemMind"
                                 className="h-auto w-[320px] sm:w-[360px] lg:w-[420px]"
+
                             />
                         </div>
                     </div>
