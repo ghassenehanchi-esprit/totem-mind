@@ -6,7 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function (Request $request, AuthenticatedSessionController $controller) {
+Route::get('/', function (Request $request) {
+    if ($request->user()) {
+        return redirect()->route('dashboard');
+    }
+
+    return redirect()->route('login');
+});
+
+Route::get('/login', function (Request $request, AuthenticatedSessionController $controller) {
     if ($request->user()) {
         return redirect()->route('dashboard');
     }
