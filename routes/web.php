@@ -1,30 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/cgu-mentions-legales', function () {
-    return Inertia::render('TermsAndLegal');
-})->name('terms');
-
-Route::get('/politique-de-confidentialite', function () {
-    return Inertia::render('PrivacyPolicy');
-})->name('privacy');
-
-Route::get('/contact', function () {
-    return Inertia::render('Contact');
-})->name('contact');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
