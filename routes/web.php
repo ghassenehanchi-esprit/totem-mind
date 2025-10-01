@@ -1,8 +1,18 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/', function (Request $request, AuthenticatedSessionController $controller) {
+    if ($request->user()) {
+        return redirect()->route('dashboard');
+    }
+
+    return $controller->create($request);
+})->name('login');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

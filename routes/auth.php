@@ -35,9 +35,6 @@ Route::middleware('guest')->group(function () use ($registerThrottle, $loginThro
         return Inertia::render('Auth/RegistrationComplete');
     })->name('register.complete');
 
-    Route::get('/', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('throttle:'.$loginThrottle);
 
