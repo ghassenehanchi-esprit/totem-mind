@@ -1,5 +1,3 @@
-import { Link } from '@inertiajs/react';
-
 const variantStyles = {
     light: {
         container: 'border-white/10 bg-brand-midnight text-white/80',
@@ -14,9 +12,12 @@ const variantStyles = {
 };
 
 const footerLinks = [
-    { label: 'CGU', routeName: 'terms' },
-    { label: 'Politique de confidentialité', routeName: 'privacy' },
-    { label: 'Contact', routeName: 'contact' },
+    { label: 'CGU', href: 'https://totemmind.app/cgu-mentions-legales/' },
+    {
+        label: 'Politique de confidentialité',
+        href: 'https://totemmind.app/politique-de-confidentialite/',
+    },
+    { label: 'Contact', href: 'https://totemmind.app/contact/' },
 ];
 
 export default function SiteFooter({ className = '', variant = 'light' }) {
@@ -32,13 +33,13 @@ export default function SiteFooter({ className = '', variant = 'light' }) {
                 </span>
 
                 {footerLinks.map((footerLink) => (
-                    <Link
+                    <a
                         key={footerLink.label}
-                        href={route(footerLink.routeName)}
+                        href={footerLink.href}
                         className={`transition-colors ${link}`.trim()}
                     >
                         {footerLink.label}
-                    </Link>
+                    </a>
                 ))}
             </div>
         </footer>
