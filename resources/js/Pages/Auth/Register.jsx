@@ -242,15 +242,16 @@ export default function Register() {
 
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
+            <ApplicationLogo className="h-16 w-auto" />
+
             <img
                 src="/images/loup-blanc.png"
                 alt="Illustration d'un loup"
-                className="w-full max-w-sm"
+                className="mt-12 w-full max-w-sm"
             />
 
-            <p className="mt-10 max-w-sm text-lg text-white/80">
-                Gagnez de l’argent avec des sondages rémunérés et rejoignez une
-                communauté passionnée par les esprits totems.
+            <p className="mt-10 max-w-sm text-lg font-serif text-white/80">
+                Gagnez de l'argent avec des sondages rémunérés !
             </p>
         </div>
     );
@@ -259,23 +260,20 @@ export default function Register() {
         <AuthLayout
             aside={asideContent}
             asideClassName="bg-brand-midnight lg:items-start"
+            mainWidthClassName="lg:w-3/5"
+            asideWidthClassName="lg:w-2/5"
             footerVariant="light"
             showLogo={false}
         >
             <Head title="Inscription" />
 
-            <div className="mb-10 mt-12 flex justify-center">
-                <ApplicationLogo className="h-16 w-auto" />
-            </div>
-
-            <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur">
+            <div className="mt-12 rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur">
                 <div className="text-center">
                     <h1 className="text-4xl font-semibold text-white">
                         S’inscrire par mail
                     </h1>
                     <p className="mt-4 text-sm text-white/70">
-                        Créez votre compte en quelques instants pour accéder à
-                        l’univers Totem Mind.
+                        Créez votre compte en 1mn
                     </p>
                 </div>
 
@@ -430,14 +428,9 @@ export default function Register() {
                 </form>
             </div>
 
-            <div className="mt-10 text-center text-sm text-white/70">
-                Dès votre inscription (par mail, Google ou Facebook), vous
-                recevrez un e-mail pour valider votre compte.
-            </div>
-
             <div className="mt-12 text-center">
                 <p className="font-serif text-2xl font-semibold text-white">
-                    Ou par
+                    Ou avec
                 </p>
 
                 <div className="mt-6 flex flex-col gap-4">
@@ -454,7 +447,7 @@ export default function Register() {
                 Déjà inscrit ?{' '}
                 <Link
                     href={route('login')}
-                    className="font-semibold text-white hover:text-brand-sand"
+                    className="inline-block rounded-full bg-white px-4 py-2 font-semibold text-brand-midnight transition-colors hover:bg-brand-sand hover:text-brand-midnight"
                 >
                     Connectez-vous !
                 </Link>

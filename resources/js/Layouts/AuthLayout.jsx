@@ -8,6 +8,8 @@ export default function AuthLayout({
     containerClassName = '',
     contentWrapperClassName = '',
     asideClassName = 'bg-brand-midnight',
+    mainWidthClassName = 'lg:w-1/2',
+    asideWidthClassName = 'lg:w-1/2',
     footerVariant = 'light',
     showLogo = true,
     mobileAside = null,
@@ -33,7 +35,7 @@ export default function AuthLayout({
                 >
                     <main
                         className={`flex w-full justify-center px-6 pb-12 ${
-                            hasAside ? 'lg:w-1/2 lg:px-16' : ''
+                            hasAside ? `${mainWidthClassName} lg:px-16` : ''
                         }`.trim()}
                     >
                         <div
@@ -48,7 +50,7 @@ export default function AuthLayout({
                     {hasAside && (
                         <>
                             <div
-                                className={`hidden lg:flex lg:w-1/2 lg:shrink-0 lg:items-stretch ${
+                                className={`hidden lg:flex ${asideWidthClassName} lg:shrink-0 lg:items-stretch ${
                                     asideClassName
                                 }`.trim()}
                             >
