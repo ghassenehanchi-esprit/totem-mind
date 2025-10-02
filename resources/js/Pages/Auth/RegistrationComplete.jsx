@@ -14,7 +14,7 @@ export default function RegistrationComplete() {
             <img
                 src="/images/renard-blanc.png"
                 alt="Illustration d'un renard"
-                className="w-full max-w-md"
+                className="mt-[100px] w-[70%] max-w-md"
             />
 
             <h1 className="mt-10 text-4xl font-semibold text-white">
@@ -37,7 +37,7 @@ export default function RegistrationComplete() {
 
             <Link
                 href={route('login')}
-                className="mt-12 inline-flex w-full items-center justify-center rounded-full bg-brand-sand px-8 py-3 font-serif text-lg font-semibold text-brand-ocean transition-colors duration-200 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 sm:w-auto"
+                className="mt-12 inline-flex w-full items-center justify-center rounded-full bg-brand-sand px-8 py-3 font-serif text-lg font-semibold text-black transition-colors duration-200 hover:bg-white hover:text-[#1b263b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 sm:w-auto"
             >
                 Accéder à mon compte
             </Link>
