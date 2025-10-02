@@ -108,7 +108,7 @@ export default function ForgotPassword({ status }) {
 
             <Link
                 href={route('login')}
-                className="rounded-full bg-white/20 px-4 py-1 text-sm font-semibold text-white transition-colors hover:bg-white/30 hover:text-brand-sand"
+                className="text-sm font-semibold text-white underline decoration-2 underline-offset-4 transition-colors hover:text-brand-sand"
             >
                 Essayer de vous reconnecter
             </Link>

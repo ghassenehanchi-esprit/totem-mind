@@ -158,10 +158,11 @@ export default function Login({ status, canResetPassword, canRegister }) {
             {canRegister && (
                 <p className="mt-12 text-center text-sm text-white/80">
                     Pas encore de compte ?{' '}
-                    <Link href={route('register')} className="font-semibold">
-                        <span className="rounded-full bg-white px-2 py-1 text-brand-midnight">
-                            Inscrivez-vous !
-                        </span>
+                    <Link
+                        href={route('register')}
+                        className="font-semibold text-white underline decoration-2 underline-offset-4 transition-colors hover:text-brand-sand"
+                    >
+                        Inscrivez-vous !
                     </Link>
                 </p>
             )}
