@@ -12,10 +12,7 @@ export default function EmailNotifications() {
     const { data, setData } = useForm({
         email: '',
         updates: true,
-        surveys: true,
         reminders: true,
-        tips: false,
-        frequency: 'hebdomadaire',
     });
     const [formErrors, setFormErrors] = useState({});
     const [saved, setSaved] = useState(false);
@@ -35,7 +32,7 @@ export default function EmailNotifications() {
             }
         }
 
-        if (!data.updates && !data.surveys && !data.reminders && !data.tips) {
+        if (!data.updates && !data.reminders) {
             nextErrors.notifications =
                 'Sélectionnez au moins un type de notification.';
         }
@@ -54,26 +51,8 @@ export default function EmailNotifications() {
         setSaved(true);
     };
 
-    const asideContent = (
-        <div className="flex flex-col items-center text-center text-white">
-            <img
-                src="/images/paysage-bleu.png"
-                alt="Illustration d’un paysage onirique"
-                className="w-full max-w-sm"
-            />
-
-            <p className="mt-10 max-w-sm text-lg text-white/80">
-                Choisissez les messages que vous souhaitez recevoir pour
-                rester connecté à l’univers Totem Mind.
-            </p>
-        </div>
-    );
-
     return (
         <AuthLayout
-            aside={asideContent}
-            asideClassName="bg-brand-midnight"
-            backgroundClassName="bg-brand-ocean"
             footerVariant="light"
             showLogo={false}
         >
@@ -144,7 +123,7 @@ export default function EmailNotifications() {
                                         setData('updates', event.target.checked);
                                         setSaved(false);
                                     }}
-                                    className="mt-1 size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
+                                    className="mt-1 size-5 border-white/40 text-[#1d263d] focus:ring-[#1d263d] focus:ring-offset-0"
                                 />
                                 <span>
                                     <span className="font-semibold text-white">
@@ -159,60 +138,19 @@ export default function EmailNotifications() {
 
                             <label className="flex items-start gap-3 text-sm text-white/90">
                                 <Checkbox
-                                    checked={data.surveys}
-                                    onChange={(event) => {
-                                        setData('surveys', event.target.checked);
-                                        setSaved(false);
-                                    }}
-                                    className="mt-1 size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
-                                />
-                                <span>
-                                    <span className="font-semibold text-white">
-                                        Sondages disponibles
-                                    </span>
-                                    <span className="block text-white/70">
-                                        Soyez averti dès qu’un nouveau sondage rémunéré est
-                                        publié.
-                                    </span>
-                                </span>
-                            </label>
-
-                            <label className="flex items-start gap-3 text-sm text-white/90">
-                                <Checkbox
                                     checked={data.reminders}
                                     onChange={(event) => {
                                         setData('reminders', event.target.checked);
                                         setSaved(false);
                                     }}
-                                    className="mt-1 size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
+                                    className="mt-1 size-5 border-white/40 text-[#1d263d] focus:ring-[#1d263d] focus:ring-offset-0"
                                 />
                                 <span>
                                     <span className="font-semibold text-white">
                                         Rappels et suivis
                                     </span>
                                     <span className="block text-white/70">
-                                        Recevez des rappels pour finaliser vos sondages et suivre
-                                        vos gains.
-                                    </span>
-                                </span>
-                            </label>
-
-                            <label className="flex items-start gap-3 text-sm text-white/90">
-                                <Checkbox
-                                    checked={data.tips}
-                                    onChange={(event) => {
-                                        setData('tips', event.target.checked);
-                                        setSaved(false);
-                                    }}
-                                    className="mt-1 size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
-                                />
-                                <span>
-                                    <span className="font-semibold text-white">
-                                        Conseils personnalisés
-                                    </span>
-                                    <span className="block text-white/70">
-                                        Recevez des astuces pour optimiser votre expérience et vos
-                                        gains.
+                                        Recevez des rappels de vos gains à retirer.
                                     </span>
                                 </span>
                             </label>
@@ -225,30 +163,11 @@ export default function EmailNotifications() {
                         />
                     </div>
 
-                    <div>
-                        <InputLabel
-                            htmlFor="frequency"
-                            value="Fréquence d’envoi"
-                            variant="brand"
-                        />
-
-                        <select
-                            id="frequency"
-                            name="frequency"
-                            value={data.frequency}
-                            onChange={(event) => {
-                                setData('frequency', event.target.value);
-                                setSaved(false);
-                            }}
-                            className="w-full rounded-full border border-white/30 bg-white/10 px-5 py-3 text-base text-white focus:border-white focus:outline-none focus:ring-2 focus:ring-white/70 focus:ring-offset-0"
-                        >
-                            <option value="hebdomadaire">Une fois par semaine</option>
-                            <option value="mensuelle">Une fois par mois</option>
-                            <option value="ponctuelle">Seulement pour les informations importantes</option>
-                        </select>
-                    </div>
-
-                    <PrimaryButton type="submit" variant="brand">
+                    <PrimaryButton
+                        type="submit"
+                        variant="brand"
+                        className="text-black hover:bg-[#1b263b] hover:text-white"
+                    >
                         Enregistrer mes préférences
                     </PrimaryButton>
                 </form>
