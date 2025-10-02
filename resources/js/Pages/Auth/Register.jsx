@@ -447,7 +447,7 @@ export default function Register() {
                 Déjà inscrit ?{' '}
                 <Link
                     href={route('login')}
-                    className="inline-block rounded-full bg-white px-4 py-2 font-semibold text-brand-midnight transition-colors hover:bg-brand-sand hover:text-brand-midnight"
+                    className="inline-block font-semibold text-white underline decoration-2 underline-offset-4 transition-colors hover:text-brand-sand"
                 >
                     Connectez-vous !
                 </Link>
