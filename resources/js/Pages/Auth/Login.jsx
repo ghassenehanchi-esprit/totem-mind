@@ -3,17 +3,29 @@ import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SocialAuthButton from '@/Components/SocialAuthButton';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useEffect } from 'react';
 
-export default function Login({ status, canResetPassword, canRegister }) {
+export default function Login({
+    status,
+    canResetPassword,
+    canRegister,
+    socialProviders = [],
+    socialError = '',
+}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
     });
+
+    const providerSet = new Set(socialProviders);
+    const hasGoogle = providerSet.has('google');
+    const hasFacebook = providerSet.has('facebook');
+    const hasSocialProviders = hasGoogle || hasFacebook;
 
     useEffect(() => {
         return () => {
@@ -66,6 +78,16 @@ export default function Login({ status, canResetPassword, canRegister }) {
                 {status && (
                     <div className="mt-6 rounded-full bg-emerald-400/20 px-6 py-3 text-center text-sm font-semibold text-emerald-100">
                         {status}
+                    </div>
+                )}
+
+                {socialError && (
+                    <div
+                        className={`mt-6 rounded-full px-6 py-3 text-center text-sm font-semibold text-rose-100 ${
+                            status ? 'bg-rose-400/20' : 'bg-rose-500/20'
+                        }`}
+                    >
+                        {socialError}
                     </div>
                 )}
 
@@ -153,6 +175,38 @@ export default function Login({ status, canResetPassword, canRegister }) {
                         Se connecter
                     </PrimaryButton>
                 </form>
+
+                {hasSocialProviders && (
+                    <div className="mt-10 border-t border-white/20 pt-10">
+                        <p className="text-center font-serif text-2xl font-semibold text-white">
+                            Ou connectez-vous avec
+                        </p>
+
+                        <div className="mt-6 flex flex-col gap-4">
+                            {hasGoogle && (
+                                <SocialAuthButton
+                                    provider="google"
+                                    href={route('socialite.redirect', {
+                                        provider: 'google',
+                                    })}
+                                >
+                                    Continuer avec Google
+                                </SocialAuthButton>
+                            )}
+
+                            {hasFacebook && (
+                                <SocialAuthButton
+                                    provider="facebook"
+                                    href={route('socialite.redirect', {
+                                        provider: 'facebook',
+                                    })}
+                                >
+                                    Continuer avec Facebook
+                                </SocialAuthButton>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {canRegister && (
