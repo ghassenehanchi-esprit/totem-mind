@@ -79,12 +79,12 @@ export default function ForgotPassword({ status }) {
                                 name="email"
                                 value={data.email}
                                 variant="brand"
-                                placeholder="Adresse mail"
+                                placeholder="Adresse email"
                                 autoComplete="email"
                                 isFocused
                                 onChange={(e) => setData('email', e.target.value)}
                                 required
-                                className="bg-white text-brand-midnight placeholder:text-brand-midnight/60"
+                                className="placeholder:text-white"
                             />
 
                             <InputError
@@ -98,6 +98,7 @@ export default function ForgotPassword({ status }) {
                             type="submit"
                             variant="brand"
                             disabled={processing}
+                            className="text-black hover:bg-[#1b263b] hover:text-white"
                         >
                             Recevoir un mail pour réinitialiser le mot de passe
                         </PrimaryButton>
@@ -107,7 +108,7 @@ export default function ForgotPassword({ status }) {
 
             <Link
                 href={route('login')}
-                className="text-sm font-semibold text-white transition-colors hover:text-brand-sand"
+                className="rounded-full bg-white/20 px-4 py-1 text-sm font-semibold text-white transition-colors hover:bg-white/30 hover:text-brand-sand"
             >
                 Essayer de vous reconnecter
             </Link>
