@@ -23,7 +23,9 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'socialProviders' => config('services.socialite.providers', []),
+        ]);
     }
 
     /**

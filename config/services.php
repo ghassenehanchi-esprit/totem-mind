@@ -40,4 +40,28 @@ return [
         'secret_key' => env('RECAPTCHA_SECRET_KEY', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'),
     ],
 
+    'socialite' => [
+        'providers' => array_values(array_filter([
+            filter_var(env('SOCIALITE_GOOGLE_ENABLED', true), FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) !== false
+                ? 'google'
+                : null,
+            filter_var(env('SOCIALITE_FACEBOOK_ENABLED', true), FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) !== false
+                ? 'facebook'
+                : null,
+        ])),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
+        'graph_version' => 'v20.0',
+    ],
+
 ];

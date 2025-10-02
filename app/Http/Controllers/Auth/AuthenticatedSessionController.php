@@ -28,6 +28,8 @@ class AuthenticatedSessionController extends Controller
             'status' => $request->session()->get('status'),
             'canResetPassword' => Route::has('password.request'),
             'canRegister' => Route::has('register'),
+            'socialProviders' => config('services.socialite.providers', []),
+            'socialError' => $request->session()->pull('socialite_error'),
         ]);
     }
 

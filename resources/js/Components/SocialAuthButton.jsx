@@ -51,20 +51,25 @@ export default function SocialAuthButton({
     provider = 'default',
     children,
     className = '',
+    href,
     ...props
 }) {
     const config = providerConfig[provider] ?? providerConfig.default;
     const baseClassName =
         'flex w-full items-center justify-center gap-3 rounded-full px-6 py-3 text-base font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70';
 
+    const Component = href ? 'a' : 'button';
+    const { type, ...rest } = props;
+    const componentProps = href ? { href } : { type: type ?? 'button' };
+
     return (
-        <button
-            type="button"
+        <Component
+            {...componentProps}
             className={`${baseClassName} ${config.className} ${className}`.trim()}
-            {...props}
+            {...rest}
         >
             {config.icon}
             <span>{children}</span>
-        </button>
+        </Component>
     );
 }

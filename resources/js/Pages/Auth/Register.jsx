@@ -16,7 +16,7 @@ const strengthStyles = {
 
 const RECAPTCHA_SCRIPT_URL = 'https://www.google.com/recaptcha/api.js?render=explicit';
 
-export default function Register() {
+export default function Register({ socialProviders = [] }) {
     const {
         data,
         setData,
@@ -41,6 +41,11 @@ export default function Register() {
     const [captchaError, setCaptchaError] = useState('');
 
     const [isUnderage, setIsUnderage] = useState(false);
+
+    const providerSet = new Set(socialProviders);
+    const hasGoogle = providerSet.has('google');
+    const hasFacebook = providerSet.has('facebook');
+    const hasSocialProviders = hasGoogle || hasFacebook;
 
     useEffect(() => {
         if (data.email && !data.name) {
@@ -428,20 +433,37 @@ export default function Register() {
                 </form>
             </div>
 
-            <div className="mt-12 text-center">
-                <p className="font-serif text-2xl font-semibold text-white">
-                    Ou avec
-                </p>
+            {hasSocialProviders && (
+                <div className="mt-12 text-center">
+                    <p className="font-serif text-2xl font-semibold text-white">
+                        Ou avec
+                    </p>
 
-                <div className="mt-6 flex flex-col gap-4">
-                    <SocialAuthButton provider="google">
-                        S’inscrire avec Google
-                    </SocialAuthButton>
-                    <SocialAuthButton provider="facebook">
-                        S’inscrire avec Facebook
-                    </SocialAuthButton>
+                    <div className="mt-6 flex flex-col gap-4">
+                        {hasGoogle && (
+                            <SocialAuthButton
+                                provider="google"
+                                href={route('socialite.redirect', {
+                                    provider: 'google',
+                                })}
+                            >
+                                S’inscrire avec Google
+                            </SocialAuthButton>
+                        )}
+
+                        {hasFacebook && (
+                            <SocialAuthButton
+                                provider="facebook"
+                                href={route('socialite.redirect', {
+                                    provider: 'facebook',
+                                })}
+                            >
+                                S’inscrire avec Facebook
+                            </SocialAuthButton>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <p className="mt-12 text-center text-sm text-white/80">
                 Déjà inscrit ?{' '}
