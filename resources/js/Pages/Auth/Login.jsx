@@ -30,14 +30,14 @@ export default function Login({ status, canResetPassword, canRegister }) {
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white">
             <img
-                src="/images/lézard-blanc.png"
-                alt="Illustration d'un lézard"
+                src="/images/loup-blanc.png"
+                alt="Illustration d'un loup"
                 className="w-full max-w-sm"
             />
 
-            <p className="mt-10 max-w-sm text-lg text-white/80">
-                Accédez à votre espace Totem Mind pour continuer vos quêtes,
-                suivre vos gains et profiter des sondages exclusifs.
+            <p className="mt-10 max-w-sm font-serif text-lg text-white/80">
+                Accédez à votre espace Totem Mind pour continuer les
+                sondages rémunérés !
             </p>
         </div>
     );
@@ -61,10 +61,6 @@ export default function Login({ status, canResetPassword, canRegister }) {
                     <h1 className="text-4xl font-semibold text-white">
                         Se connecter
                     </h1>
-                    <p className="mt-4 text-sm text-white/70">
-                        Retrouvez votre espace personnel et continuez l'aventure
-                        Totem Mind.
-                    </p>
                 </div>
 
                 {status && (
@@ -133,7 +129,7 @@ export default function Login({ status, canResetPassword, canRegister }) {
                                 onChange={(e) =>
                                     setData('remember', e.target.checked)
                                 }
-                                className="size-5 border-white/40 text-brand-sand focus:ring-brand-sand focus:ring-offset-0"
+                                className="size-5 border-white/40 text-[#1d263d] focus:ring-brand-sand focus:ring-offset-0"
                             />
                             <span>Se souvenir de moi</span>
                         </label>
@@ -162,11 +158,10 @@ export default function Login({ status, canResetPassword, canRegister }) {
             {canRegister && (
                 <p className="mt-12 text-center text-sm text-white/80">
                     Pas encore de compte ?{' '}
-                    <Link
-                        href={route('register')}
-                        className="font-semibold text-white hover:text-brand-sand"
-                    >
-                        Inscrivez-vous !
+                    <Link href={route('register')} className="font-semibold">
+                        <span className="rounded-full bg-white px-2 py-1 text-brand-midnight">
+                            Inscrivez-vous !
+                        </span>
                     </Link>
                 </p>
             )}
