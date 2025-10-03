@@ -5,9 +5,9 @@ const variantStyles = {
         link: 'text-white/80 hover:text-white',
     },
     dark: {
-        container: 'border-slate-200 bg-white text-slate-600',
-        label: 'text-brand-midnight',
-        link: 'text-slate-600 hover:text-brand-ocean',
+        container: 'border-transparent bg-[#1d263d] text-white/80',
+        label: 'text-white',
+        link: 'text-white/80 hover:text-white',
     },
 };
 
