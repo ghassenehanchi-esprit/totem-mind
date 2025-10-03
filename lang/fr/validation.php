@@ -145,6 +145,12 @@ return [
     'ulid' => 'Le champ :attribute doit être un ULID valide.',
     'uuid' => 'Le champ :attribute doit être un UUID valide.',
 
+    'custom' => [
+        'email' => [
+            'unique' => 'Cette adresse mail est déjà utilisée, veuillez vous connecter avec celle-ci.',
+        ],
+    ],
+
     'attributes' => [
         'email' => 'adresse e-mail',
         'password' => 'mot de passe',
