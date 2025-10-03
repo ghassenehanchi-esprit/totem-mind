@@ -24,15 +24,10 @@ export default function ResetPassword({ token, email }) {
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white">
             <img
-                src="/images/palette.png"
-                alt="Palette de couleurs Totem"
+                src="/images/lézard-blanc.png"
+                alt="Lézard Totem"
                 className="w-full max-w-sm"
             />
-
-            <p className="mt-10 max-w-sm text-lg text-white/80">
-                Choisissez un nouveau mot de passe sécurisé pour continuer vos
-                explorations dans l’univers Totem Mind.
-            </p>
         </div>
     );
 
