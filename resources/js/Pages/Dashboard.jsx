@@ -8,7 +8,7 @@ export default function Dashboard() {
 
             <div className="relative flex w-full flex-col overflow-hidden px-0 pb-12 sm:pb-16">
                 <div className="relative flex w-full flex-col gap-10 text-[#081b2e]">
-                    <div className="relative -mx-6 flex flex-col gap-4 overflow-hidden bg-[#12385b] px-6 py-16 text-white sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16">
+                    <div className="relative -mx-6 flex flex-col gap-4 bg-[#12385b] px-6 py-16 text-white sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16">
                         <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
 
                             <h1 className="text-4xl font-semibold text-white">Sondages rémunérés</h1>
@@ -20,7 +20,7 @@ export default function Dashboard() {
                         <img
                             src="/images/element-08.png"
                             alt="Illustration décorative Totem Mind"
-                            className="pointer-events-none absolute -top-12 right-0 h-40 w-auto max-w-none translate-x-10"
+                            className="pointer-events-none absolute top-0 right-0 h-40 w-auto max-w-none"
                         />
                     </div>
 
@@ -32,7 +32,7 @@ export default function Dashboard() {
                         <img
                             src="/images/paysage.png"
                             alt="Illustration de paysage Totem Mind"
-                            className="h-auto w-full max-w-md"
+                            className="h-auto w-1/2 max-w-none"
                         />
 
                         <p className="max-w-3xl text-2xl font-serif font-semibold leading-snug text-[#333333]">
