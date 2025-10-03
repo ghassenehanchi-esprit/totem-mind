@@ -42,4 +42,40 @@ class RegistrationTest extends TestCase
             'birthdate' => now()->subYears(20)->toDateString(),
         ]);
     }
+
+    public function test_registration_is_limited_to_one_attempt_per_ip_by_default(): void
+    {
+        Http::fake([
+            'https://www.google.com/recaptcha/api/siteverify' => Http::response([
+                'success' => true,
+            ], 200),
+        ]);
+
+        $firstResponse = $this->post('/register', [
+            'name' => 'First User',
+            'email' => 'first@example.com',
+            'birthdate' => now()->subYears(20)->toDateString(),
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'captcha_token' => 'test-token',
+        ]);
+
+        $firstResponse->assertRedirect(route('register.complete'));
+
+        $secondResponse = $this->post('/register', [
+            'name' => 'Second User',
+            'email' => 'second@example.com',
+            'birthdate' => now()->subYears(20)->toDateString(),
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'captcha_token' => 'test-token',
+        ]);
+
+        $secondResponse->assertStatus(422);
+        $secondResponse->assertSessionHasErrors('email');
+
+        $this->assertDatabaseMissing('users', [
+            'email' => 'second@example.com',
+        ]);
+    }
 }
