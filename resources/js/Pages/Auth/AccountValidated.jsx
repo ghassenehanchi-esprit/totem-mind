@@ -14,20 +14,20 @@ export default function AccountValidated() {
             <img
                 src="/images/renard-blanc.png"
                 alt="Illustration d'un renard"
-                className="mt-[100px] w-[70%] max-w-lg"
+                className="mt-[100px] w-[70%] max-w-md"
             />
 
-            <div className="mt-16 flex w-full max-w-3xl items-center gap-8">
+            <div className="mt-16 flex w-full max-w-3xl flex-col items-center gap-4 sm:flex-row sm:gap-8">
                 <span
                     aria-hidden="true"
-                    className="h-px flex-1 bg-white/30"
+                    className="hidden h-px flex-1 bg-white/30 sm:block"
                 ></span>
                 <h1 className="flex-shrink-0 font-serif text-5xl text-white">
                     Compte validé !
                 </h1>
                 <span
                     aria-hidden="true"
-                    className="h-px flex-1 bg-white/30"
+                    className="hidden h-px flex-1 bg-white/30 sm:block"
                 ></span>
             </div>
 
