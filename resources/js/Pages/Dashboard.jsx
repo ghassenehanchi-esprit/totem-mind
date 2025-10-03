@@ -6,10 +6,11 @@ export default function Dashboard() {
         <SurveyLayout activeItem="surveys">
             <Head title="Sondages rémunérés" />
 
-            <div className="relative flex w-full flex-col overflow-hidden px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
-                <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-10 text-[#081b2e]">
-                    <div className="relative overflow-hidden rounded-3xl bg-[#12385b] px-8 py-10 text-white shadow-lg">
-                        <div className="flex flex-col gap-4">
+            <div className="relative flex w-full flex-col overflow-hidden px-0 pb-12 sm:pb-16">
+                <div className="relative flex w-full flex-col gap-10 text-[#081b2e]">
+                    <div className="relative -mx-6 flex flex-col gap-4 overflow-hidden bg-[#12385b] px-6 py-16 text-white sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16">
+                        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
+
                             <h1 className="text-4xl font-semibold text-white">Sondages rémunérés</h1>
                             <p className="max-w-2xl text-base text-white/80">
                                 Certains sondages vous donnent des récompenses même si vous n'êtes pas sélectionné(e) !
@@ -23,11 +24,11 @@ export default function Dashboard() {
                         />
                     </div>
 
-                    <div className="rounded-3xl border border-dashed border-[#081b2e]/20 bg-white/60 px-6 py-6 text-sm italic text-[#081b2e]/70">
+                    <div className="mx-auto w-full max-w-5xl rounded-3xl border border-dashed border-[#081b2e]/20 bg-white/60 px-6 py-6 text-sm italic text-[#081b2e]/70">
                         (note développeur : ici, on mettra le script-code des sondages)
                     </div>
 
-                    <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+                    <div className="mx-auto flex flex-1 w-full max-w-5xl flex-col items-center justify-center gap-8 px-6 text-center sm:px-10 lg:px-16">
                         <img
                             src="/images/paysage.png"
                             alt="Illustration de paysage Totem Mind"
