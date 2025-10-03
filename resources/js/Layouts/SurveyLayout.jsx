@@ -26,7 +26,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                             <ApplicationLogo className="h-14 w-auto" />
                         </Link>
 
-                        <div className="mt-10 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
+                        <div className="mt-10 flex items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-5 py-4">
                             <div className="flex flex-col gap-1">
                                 <p className="text-xs text-white/60">Bonjour</p>
                                 <p className="text-sm font-semibold text-white">{user?.email}</p>
@@ -48,7 +48,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                                         <Link
                                             key={item.key}
                                             href={item.href}
-                                            className={`flex w-full items-center justify-between rounded-2xl px-5 py-4 text-sm font-semibold capitalize transition-colors duration-200 font-sans ${
+                                            className={`flex w-full items-center justify-between rounded-3xl px-5 py-4 text-sm font-semibold capitalize transition-colors duration-200 font-sans ${
                                                 isActive
                                                     ? 'bg-[#f1f5f9] text-[#081b2e] shadow-xl shadow-black/30'
                                                     : 'bg-white/5 text-white/80 hover:bg-white/10'
@@ -63,7 +63,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                                     <span
                                         key={item.key}
                                         aria-disabled="true"
-                                        className="flex w-full items-center justify-between rounded-2xl bg-white/5 px-5 py-4 text-sm font-semibold capitalize text-white/30 font-sans"
+                                        className="flex w-full items-center justify-between rounded-3xl bg-white/5 px-5 py-4 text-sm font-semibold capitalize text-white/30 font-sans"
                                     >
                                         {item.label}
                                     </span>
@@ -77,7 +77,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                                 method="post"
                                 as="button"
                                 type="button"
-                                className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-5 py-4 text-sm font-semibold uppercase tracking-[0.3em] text-[#081b2e] shadow-xl shadow-black/30 transition-colors duration-200 hover:bg-[#f1f5f9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/30"
+                                className="inline-flex w-full items-center justify-center rounded-3xl bg-white px-5 py-4 text-sm font-semibold uppercase tracking-[0.3em] text-[#081b2e] shadow-xl shadow-black/30 transition-colors duration-200 hover:bg-[#f1f5f9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/30"
                             >
                                 Déconnexion
                             </Link>
