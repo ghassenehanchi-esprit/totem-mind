@@ -20,29 +20,22 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
     return (
         <div className="flex min-h-screen flex-col bg-[#071522] text-white">
             <div className="flex flex-1 flex-col lg:flex-row">
-                <aside className="w-full bg-[#081b2e] px-8 py-10 lg:w-80">
+                <aside className="w-full bg-[#212a3a] px-8 py-10 lg:w-80">
                     <div className="flex h-full flex-col">
                         <Link href="/" className="flex items-center gap-4 text-white">
                             <ApplicationLogo className="h-14 w-auto" />
-
-                            <div className="flex flex-col">
-                                <span className="text-xs uppercase tracking-[0.45em] text-white/60">
-                                    Totem Mind
-                                </span>
-                                <span className="text-lg font-semibold text-white">
-                                    Espace membre
-                                </span>
-                            </div>
                         </Link>
 
                         <div className="mt-10 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
-                            <div>
-                                <p className="text-[0.65rem] uppercase tracking-[0.45em] text-white/50">Bonjour</p>
-                                <p className="text-lg font-semibold text-white">{user?.name}</p>
-                                <p className="text-xs text-white/50">{user?.email}</p>
+                            <div className="flex flex-col gap-1">
+                                <p className="text-xs text-white/60">Bonjour</p>
+                                <p className="text-sm font-semibold text-white">{user?.email}</p>
                             </div>
-                            <span className="rounded-full bg-white px-4 py-1 text-sm font-semibold uppercase tracking-[0.3em] text-[#081b2e]">
-                                1 €
+                            <span
+                                className="inline-flex items-center gap-1 rounded-full bg-white px-4 py-1 text-sm font-semibold text-[#081b2e]"
+                            >
+                                <span>1</span>
+                                <span>€</span>
                             </span>
                         </div>
 
@@ -55,7 +48,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                                         <Link
                                             key={item.key}
                                             href={item.href}
-                                            className={`flex w-full items-center justify-between rounded-2xl px-5 py-4 text-sm font-semibold uppercase tracking-[0.35em] transition-colors duration-200 ${
+                                            className={`flex w-full items-center justify-between rounded-2xl px-5 py-4 text-sm font-semibold capitalize transition-colors duration-200 font-sans ${
                                                 isActive
                                                     ? 'bg-[#f1f5f9] text-[#081b2e] shadow-xl shadow-black/30'
                                                     : 'bg-white/5 text-white/80 hover:bg-white/10'
@@ -70,7 +63,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                                     <span
                                         key={item.key}
                                         aria-disabled="true"
-                                        className="flex w-full items-center justify-between rounded-2xl bg-white/5 px-5 py-4 text-sm font-semibold uppercase tracking-[0.35em] text-white/30"
+                                        className="flex w-full items-center justify-between rounded-2xl bg-white/5 px-5 py-4 text-sm font-semibold capitalize text-white/30 font-sans"
                                     >
                                         {item.label}
                                     </span>
@@ -92,7 +85,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                     </div>
                 </aside>
 
-                <main className="relative flex flex-1 items-stretch bg-[#f6f3ec] text-[#081b2e]">
+                <main className="relative flex flex-1 items-stretch bg-[#e0e1dd] text-[#081b2e]">
                     {children}
                 </main>
             </div>

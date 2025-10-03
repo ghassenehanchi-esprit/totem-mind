@@ -7,13 +7,6 @@ export default function Dashboard() {
             <Head title="Sondages rémunérés" />
 
             <div className="relative flex w-full flex-col overflow-hidden px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
-                <img
-                    src="/images/paysage-bleu.png"
-                    alt="Décor de Totem Mind"
-                    className="pointer-events-none absolute -top-6 right-6 w-52 max-w-full select-none opacity-30"
-                    aria-hidden="true"
-                />
-
                 <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-10 text-[#081b2e]">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-4xl font-semibold text-[#081b2e]">Sondages rémunérés</h1>
@@ -33,7 +26,7 @@ export default function Dashboard() {
                             className="h-24 w-auto"
                         />
 
-                        <p className="max-w-3xl text-2xl font-semibold leading-snug text-[#081b2e]">
+                        <p className="max-w-3xl text-2xl font-semibold leading-snug text-[#333333] font-serif">
                             On dirait qu'il n'y a plus de sondages disponibles pour le moment, revenez dans quelques heures !
                         </p>
                     </div>
