@@ -32,7 +32,7 @@ export default function Dashboard() {
                         <img
                             src="/images/paysage.png"
                             alt="Illustration de paysage Totem Mind"
-                            className="h-auto w-1/2 max-w-none"
+                            className="h-auto w-full max-w-2xl"
                         />
 
                         <p className="max-w-3xl text-2xl font-serif font-semibold leading-snug text-[#333333]">
