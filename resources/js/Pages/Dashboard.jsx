@@ -20,7 +20,7 @@ export default function Dashboard() {
                         <img
                             src="/images/element-08.png"
                             alt="Illustration décorative Totem Mind"
-                            className="pointer-events-none absolute top-0 right-0 h-40 w-auto max-w-none"
+                            className="pointer-events-none absolute top-6 right-6 h-40 w-auto max-w-none opacity-70"
                         />
                     </div>
 
@@ -32,7 +32,7 @@ export default function Dashboard() {
                         <img
                             src="/images/paysage.png"
                             alt="Illustration de paysage Totem Mind"
-                            className="h-auto w-full max-w-2xl"
+                            className="h-auto w-1/2 max-w-none"
                         />
 
                         <p className="max-w-3xl text-2xl font-serif font-semibold leading-snug text-[#333333]">
