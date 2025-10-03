@@ -18,6 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/egulias/email-validator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fakerphp/faker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/filp/whoops" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fruitcake/php-cors" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/graham-campbell/result-type" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
@@ -34,12 +35,14 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sail" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sanctum" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/serializable-closure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/socialite" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/tinker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/config" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem-local" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/mime-type-detection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth1-client" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/uri-interfaces" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mockery/mockery" />
@@ -51,10 +54,13 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nunomaduro/collision" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nunomaduro/termwind" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/constant_time_encoding" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/version" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phiki/phiki" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpseclib/phpseclib" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-code-coverage" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-file-iterator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-invoker" />
