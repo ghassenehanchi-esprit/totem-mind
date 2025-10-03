@@ -68,8 +68,7 @@ export default function EmailNotifications() {
                         Notifications par e-mail
                     </h1>
                     <p className="mt-4 text-sm text-white/70">
-                        Personnalisez les alertes reçues pour suivre l’actualité
-                        des sondages, de vos gains et des nouveautés Totem Mind.
+                        Recevez des rappels de vos gains à retirer.
                     </p>
                 </div>
 
