@@ -117,7 +117,7 @@ return [
         ],
 
         'register' => [
-            'max_attempts' => env('AUTH_REGISTER_MAX_ATTEMPTS', 3),
+            'max_attempts' => env('AUTH_REGISTER_MAX_ATTEMPTS', 1),
             'decay_minutes' => env('AUTH_REGISTER_DECAY_MINUTES', 5),
         ],
     ],
