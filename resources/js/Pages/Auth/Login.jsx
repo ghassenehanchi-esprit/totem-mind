@@ -76,7 +76,7 @@ export default function Login({
                 </div>
 
                 {status && (
-                    <div className="mt-6 rounded-full bg-emerald-400/20 px-6 py-3 text-center text-sm font-semibold text-emerald-100">
+                    <div className="mt-6 rounded-full bg-[#1b263b] px-6 py-3 text-center text-sm font-semibold text-white">
                         {status}
                     </div>
                 )}
