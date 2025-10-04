@@ -26,17 +26,18 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
                             <ApplicationLogo className="h-14 w-auto" />
                         </Link>
 
-                        <div className="mt-10 flex items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-5 py-4">
-                            <div className="flex flex-col gap-1">
-                                <p className="text-xs text-white/60">Bonjour</p>
-                                <p className="text-sm font-semibold text-white">{user?.email}</p>
-                            </div>
+                        <div className="relative mt-10 rounded-3xl border border-white/10 bg-white/5 px-5 pb-5 pt-8">
                             <span
-                                className="inline-flex items-center gap-1 rounded-full bg-white px-4 py-1 text-sm font-semibold text-[#081b2e]"
+                                className="absolute -top-4 left-5 inline-flex items-center gap-1 rounded-full bg-white px-4 py-1 text-sm font-semibold text-[#081b2e] shadow-lg shadow-black/20"
                             >
                                 <span>1</span>
                                 <span>€</span>
                             </span>
+
+                            <div className="flex flex-col gap-1">
+                                <p className="text-xs text-white/60">Bonjour</p>
+                                <p className="text-sm font-semibold text-white">{user?.email}</p>
+                            </div>
                         </div>
 
                         <nav className="mt-12 flex flex-col gap-3">
