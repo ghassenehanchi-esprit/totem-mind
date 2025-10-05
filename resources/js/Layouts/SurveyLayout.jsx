@@ -20,7 +20,7 @@ export default function SurveyLayout({ children, activeItem = 'surveys' }) {
     return (
         <div className="flex min-h-screen flex-col bg-[#071522] text-white">
             <div className="flex flex-1 flex-col lg:flex-row">
-                <aside className="w-full bg-[#212a3a] px-8 py-10 lg:w-80">
+                <aside className="w-full bg-[#1d263d] px-8 py-10 lg:w-80">
                     <div className="flex h-full flex-col">
                         <Link href="/" className="flex items-center gap-4 text-white">
                             <ApplicationLogo className="h-14 w-auto" />

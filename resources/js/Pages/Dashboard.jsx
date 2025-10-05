@@ -8,7 +8,7 @@ export default function Dashboard() {
 
             <div className="relative flex w-full flex-col overflow-hidden px-0 pb-12 sm:pb-16">
                 <div className="relative flex w-full flex-col gap-10 text-[#081b2e]">
-                    <div className="relative -mx-6 flex flex-col gap-4 bg-[#12385b] px-6 py-16 text-white sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16">
+                    <div className="relative -mx-6 flex flex-col gap-4 bg-[#415a77] px-6 py-16 text-white sm:-mx-10 sm:px-10 lg:-mx-16 lg:px-16">
                         <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
 
                             <h1 className="text-4xl font-semibold text-white">Sondages rémunérés</h1>
