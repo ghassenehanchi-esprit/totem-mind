@@ -245,6 +245,49 @@ export default function Register({ socialProviders = [] }) {
         });
     }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
+    useEffect(() => {
+        if (typeof window === 'undefined' || ! isRecaptchaReady) {
+            return undefined;
+        }
+
+        const hideTestingBanner = (root = document.body) => {
+            if (! root) {
+                return;
+            }
+
+            const banner = Array.from(
+                root.querySelectorAll('div')
+            ).find((node) =>
+                node.textContent &&
+                node.textContent
+                    .replace(/\s+/g, ' ')
+                    .toLowerCase()
+                    .includes('for testing purposes only')
+            );
+
+            if (banner?.parentElement) {
+                banner.parentElement.style.setProperty('display', 'none', 'important');
+            }
+        };
+
+        hideTestingBanner();
+
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                hideTestingBanner(mutation.target instanceof HTMLElement ? mutation.target : undefined);
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [isRecaptchaReady]);
+
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
             <ApplicationLogo className="h-16 w-auto" />
