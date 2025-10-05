@@ -14,7 +14,7 @@ export default function AccountValidated() {
             <img
                 src="/images/renard-blanc.png"
                 alt="Illustration d'un renard"
-                className="mt-[100px] w-[70%] max-w-md"
+                className="mt-[100px] w-full max-w-xs"
             />
 
             <div className="mt-16 flex w-full max-w-3xl flex-col items-center gap-4 sm:flex-row sm:gap-8">
