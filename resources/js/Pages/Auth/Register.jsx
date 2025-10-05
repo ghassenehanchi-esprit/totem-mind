@@ -317,7 +317,39 @@ export default function Register({ socialProviders = [] }) {
             <Head title="Inscription" />
 
             <div className="mt-12 rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/20 backdrop-blur">
-                <div className="text-center">
+                {hasSocialProviders && (
+                    <div className="text-center">
+                        <p className="font-serif text-2xl font-semibold text-white">
+                            S’inscrire avec
+                        </p>
+
+                        <div className="mt-6 flex flex-col gap-4">
+                            {hasGoogle && (
+                                <SocialAuthButton
+                                    provider="google"
+                                    href={route('socialite.redirect', {
+                                        provider: 'google',
+                                    })}
+                                >
+                                    S’inscrire avec Google
+                                </SocialAuthButton>
+                            )}
+
+                            {hasFacebook && (
+                                <SocialAuthButton
+                                    provider="facebook"
+                                    href={route('socialite.redirect', {
+                                        provider: 'facebook',
+                                    })}
+                                >
+                                    S’inscrire avec Facebook
+                                </SocialAuthButton>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                <div className={`text-center ${hasSocialProviders ? 'mt-12' : ''}`}>
                     <h1 className="text-4xl font-semibold text-white">
                         S’inscrire par mail
                     </h1>
@@ -476,38 +508,6 @@ export default function Register({ socialProviders = [] }) {
                     </PrimaryButton>
                 </form>
             </div>
-
-            {hasSocialProviders && (
-                <div className="mt-12 text-center">
-                    <p className="font-serif text-2xl font-semibold text-white">
-                        Ou avec
-                    </p>
-
-                    <div className="mt-6 flex flex-col gap-4">
-                        {hasGoogle && (
-                            <SocialAuthButton
-                                provider="google"
-                                href={route('socialite.redirect', {
-                                    provider: 'google',
-                                })}
-                            >
-                                S’inscrire avec Google
-                            </SocialAuthButton>
-                        )}
-
-                        {hasFacebook && (
-                            <SocialAuthButton
-                                provider="facebook"
-                                href={route('socialite.redirect', {
-                                    provider: 'facebook',
-                                })}
-                            >
-                                S’inscrire avec Facebook
-                            </SocialAuthButton>
-                        )}
-                    </div>
-                </div>
-            )}
 
             <p className="mt-12 text-center text-sm text-white/80">
                 Déjà inscrit ?{' '}
