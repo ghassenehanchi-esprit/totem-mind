@@ -1,3 +1,4 @@
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -22,11 +23,12 @@ export default function ResetPassword({ token, email }) {
     };
 
     const asideContent = (
-        <div className="flex flex-col items-center text-center text-white">
+        <div className="flex w-full flex-col items-end text-right text-white">
+            <ApplicationLogo className="mb-10 h-16 w-auto" />
             <img
                 src="/images/lézard-blanc.png"
                 alt="Lézard Totem"
-                className="w-full max-w-sm"
+                className="w-full max-w-sm self-end"
             />
         </div>
     );
@@ -37,10 +39,11 @@ export default function ResetPassword({ token, email }) {
             asideClassName="bg-brand-midnight"
             backgroundClassName="bg-brand-ocean"
             footerVariant="light"
+            showLogo={false}
         >
             <Head title="Réinitialisation du mot de passe" />
 
-            <div className="rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/10 backdrop-blur">
+            <div className="mt-[100px] rounded-[2.5rem] bg-white/10 p-8 shadow-2xl shadow-black/10 backdrop-blur">
                 <div className="text-center">
                     <h1 className="text-4xl font-semibold text-white">
                         Définir un nouveau mot de passe
