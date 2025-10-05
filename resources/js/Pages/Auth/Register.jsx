@@ -246,17 +246,21 @@ export default function Register({ socialProviders = [] }) {
     }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
     useEffect(() => {
+        if (! isRecaptchaReady) {
+            return;
+        }
+
         if (
-            ! recaptchaContainerRef.current ||
             typeof window === 'undefined' ||
+            typeof document === 'undefined' ||
             typeof window.MutationObserver === 'undefined'
         ) {
             return;
         }
 
-        const container = recaptchaContainerRef.current;
+        const rootNode = document.body ?? document;
         const hideTestMessage = () => {
-            const candidateNodes = container.querySelectorAll('div');
+            const candidateNodes = rootNode.querySelectorAll('div');
 
             candidateNodes.forEach((node) => {
                 if (
@@ -279,7 +283,7 @@ export default function Register({ socialProviders = [] }) {
             hideTestMessage();
         });
 
-        observer.observe(container, {
+        observer.observe(rootNode, {
             childList: true,
             subtree: true,
         });
