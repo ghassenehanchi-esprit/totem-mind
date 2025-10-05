@@ -488,7 +488,7 @@ export default function Register({ socialProviders = [] }) {
                     <div className="flex flex-col items-center">
                         <div
                             ref={recaptchaContainerRef}
-                            className="mx-auto flex min-h-[78px] items-center justify-center"
+                            className="register-recaptcha mx-auto flex min-h-[78px] items-center justify-center"
                         />
 
                         <InputError

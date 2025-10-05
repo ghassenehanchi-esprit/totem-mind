@@ -20,3 +20,7 @@
         @apply font-serif;
     }
 }
+
+.register-recaptcha .rc-anchor-error-msg-container {
+    display: none !important;
+}
