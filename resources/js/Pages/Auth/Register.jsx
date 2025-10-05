@@ -246,40 +246,39 @@ export default function Register({ socialProviders = [] }) {
     }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
     useEffect(() => {
-        if (
-            ! recaptchaContainerRef.current ||
-            typeof window === 'undefined' ||
-            typeof window.MutationObserver === 'undefined'
-        ) {
-            return;
+        if (typeof window === 'undefined' || ! isRecaptchaReady) {
+            return undefined;
         }
 
-        const container = recaptchaContainerRef.current;
-        const hideTestMessage = () => {
-            const candidateNodes = container.querySelectorAll('div');
+        const hideTestingBanner = (root = document.body) => {
+            if (! root) {
+                return;
+            }
 
-            candidateNodes.forEach((node) => {
-                if (
-                    typeof node.textContent === 'string' &&
-                    node.textContent.includes(
-                        'This reCAPTCHA is for testing purposes only. Please report to the site admin if you are seeing this.'
-                    )
-                ) {
-                    // Hide the test banner injected by Google when the testing key is used.
-                    // We only target the specific message text to avoid interfering with
-                    // other elements inside the widget.
-                    node.style.display = 'none';
-                }
-            });
+            const banner = Array.from(
+                root.querySelectorAll('div')
+            ).find((node) =>
+                node.textContent &&
+                node.textContent
+                    .replace(/\s+/g, ' ')
+                    .toLowerCase()
+                    .includes('for testing purposes only')
+            );
+
+            if (banner?.parentElement) {
+                banner.parentElement.style.setProperty('display', 'none', 'important');
+            }
         };
 
-        hideTestMessage();
+        hideTestingBanner();
 
-        const observer = new MutationObserver(() => {
-            hideTestMessage();
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                hideTestingBanner(mutation.target instanceof HTMLElement ? mutation.target : undefined);
+            }
         });
 
-        observer.observe(container, {
+        observer.observe(document.body, {
             childList: true,
             subtree: true,
         });
