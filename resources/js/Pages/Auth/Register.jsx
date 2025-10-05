@@ -245,6 +245,50 @@ export default function Register({ socialProviders = [] }) {
         });
     }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
+    useEffect(() => {
+        if (
+            ! recaptchaContainerRef.current ||
+            typeof window === 'undefined' ||
+            typeof window.MutationObserver === 'undefined'
+        ) {
+            return;
+        }
+
+        const container = recaptchaContainerRef.current;
+        const hideTestMessage = () => {
+            const candidateNodes = container.querySelectorAll('div');
+
+            candidateNodes.forEach((node) => {
+                if (
+                    typeof node.textContent === 'string' &&
+                    node.textContent.includes(
+                        'This reCAPTCHA is for testing purposes only. Please report to the site admin if you are seeing this.'
+                    )
+                ) {
+                    // Hide the test banner injected by Google when the testing key is used.
+                    // We only target the specific message text to avoid interfering with
+                    // other elements inside the widget.
+                    node.style.display = 'none';
+                }
+            });
+        };
+
+        hideTestMessage();
+
+        const observer = new MutationObserver(() => {
+            hideTestMessage();
+        });
+
+        observer.observe(container, {
+            childList: true,
+            subtree: true,
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [isRecaptchaReady]);
+
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
             <ApplicationLogo className="h-16 w-auto" />
