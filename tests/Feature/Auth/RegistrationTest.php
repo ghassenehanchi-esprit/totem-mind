@@ -2,8 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -41,6 +44,32 @@ class RegistrationTest extends TestCase
             'email' => 'test@example.com',
             'birthdate' => now()->subYears(20)->toDateString(),
         ]);
+    }
+
+    public function test_welcome_notification_is_sent_to_new_users(): void
+    {
+        Notification::fake();
+
+        Http::fake([
+            'https://www.google.com/recaptcha/api/siteverify' => Http::response([
+                'success' => true,
+            ], 200),
+        ]);
+
+        $this->post('/register', [
+            'name' => 'Welcome User',
+            'email' => 'welcome@example.com',
+            'birthdate' => now()->subYears(20)->toDateString(),
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'captcha_token' => 'test-token',
+        ]);
+
+        $user = User::query()->firstWhere('email', 'welcome@example.com');
+
+        $this->assertNotNull($user);
+
+        Notification::assertSentTo($user, WelcomeNotification::class);
     }
 
     public function test_registration_is_limited_to_one_attempt_per_ip_by_default(): void
