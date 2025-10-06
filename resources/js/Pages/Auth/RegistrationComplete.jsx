@@ -14,7 +14,7 @@ export default function RegistrationComplete() {
             <img
                 src="/images/renard-blanc.png"
                 alt="Illustration d'un renard"
-                className="mt-[100px] w-[70%] max-w-md"
+                className="mt-[100px] w-full max-w-xs"
             />
 
             <h1 className="mt-10 text-4xl font-semibold text-white">
