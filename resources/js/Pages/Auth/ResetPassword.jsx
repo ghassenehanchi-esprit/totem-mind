@@ -23,12 +23,12 @@ export default function ResetPassword({ token, email }) {
     };
 
     const asideContent = (
-        <div className="flex w-full flex-col items-end text-right text-white">
+        <div className="flex w-full flex-col items-center text-center text-white">
             <ApplicationLogo className="mb-10 h-16 w-auto" />
             <img
                 src="/images/lézard-blanc.png"
                 alt="Lézard Totem"
-                className="w-full max-w-sm self-end"
+                className="w-full max-w-sm self-center"
             />
         </div>
     );
