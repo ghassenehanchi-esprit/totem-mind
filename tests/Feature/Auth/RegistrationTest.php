@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -69,7 +70,8 @@ class RegistrationTest extends TestCase
 
         $this->assertNotNull($user);
 
-        Notification::assertSentTo($user, WelcomeNotification::class);
+        Notification::assertSentToTimes($user, WelcomeNotification::class, 1);
+        Notification::assertSentToTimes($user, VerifyEmail::class, 1);
     }
 
     public function test_registration_is_limited_to_one_attempt_per_ip_by_default(): void
