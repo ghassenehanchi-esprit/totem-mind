@@ -5,7 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SocialAuthButton from '@/Components/SocialAuthButton';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const strengthStyles = {
@@ -17,6 +17,8 @@ const strengthStyles = {
 const RECAPTCHA_SCRIPT_URL = 'https://www.google.com/recaptcha/api.js?render=explicit';
 
 export default function Register({ socialProviders = [] }) {
+    const { recaptcha: recaptchaConfig } = usePage().props;
+
     const {
         data,
         setData,
@@ -34,7 +36,14 @@ export default function Register({ socialProviders = [] }) {
         captcha_token: '',
     });
 
-    const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? '';
+    const siteKey =
+        recaptchaConfig && typeof recaptchaConfig.siteKey === 'string'
+            ? recaptchaConfig.siteKey
+            : '';
+    const isRecaptchaSandbox =
+        recaptchaConfig && typeof recaptchaConfig.isSandbox === 'boolean'
+            ? recaptchaConfig.isSandbox
+            : false;
     const recaptchaContainerRef = useRef(null);
     const recaptchaWidgetId = useRef(null);
     const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
@@ -246,7 +255,11 @@ export default function Register({ socialProviders = [] }) {
     }, [isRecaptchaReady, siteKey, clearErrors, setData]);
 
     useEffect(() => {
-        if (typeof window === 'undefined' || ! isRecaptchaReady) {
+        if (
+            typeof window === 'undefined' ||
+            ! isRecaptchaReady ||
+            ! isRecaptchaSandbox
+        ) {
             return undefined;
         }
 
@@ -286,7 +299,7 @@ export default function Register({ socialProviders = [] }) {
         return () => {
             observer.disconnect();
         };
-    }, [isRecaptchaReady]);
+    }, [isRecaptchaReady, isRecaptchaSandbox]);
 
     const asideContent = (
         <div className="flex flex-col items-center text-center text-white lg:self-start">
@@ -488,7 +501,9 @@ export default function Register({ socialProviders = [] }) {
                     <div className="flex flex-col items-center">
                         <div
                             ref={recaptchaContainerRef}
-                            className="register-recaptcha mx-auto flex min-h-[78px] items-center justify-center"
+                            className={`mx-auto flex min-h-[78px] items-center justify-center${
+                                isRecaptchaSandbox ? ' register-recaptcha' : ''
+                            }`}
                         />
 
                         <InputError

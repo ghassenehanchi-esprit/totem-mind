@@ -29,10 +29,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $recaptchaSiteKey = (string) config('services.recaptcha.site_key', '');
+        $recaptchaTestKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'recaptcha' => [
+                'siteKey' => $recaptchaSiteKey,
+                'isSandbox' => hash_equals($recaptchaTestKey, $recaptchaSiteKey),
             ],
         ];
     }
