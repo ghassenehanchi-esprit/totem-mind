@@ -45,6 +45,7 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
             'birthdate' => now()->subYears(20)->toDateString(),
+            'registration_ip' => '127.0.0.1',
         ]);
     }
 
