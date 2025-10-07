@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\CreateNewUser;
 use App\Http\Controllers\Controller;
-use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,9 +43,6 @@ class RegisteredUserController extends Controller
         $user = $this->creator->create($request->all());
 
         RateLimiter::clear($key);
-
-        $user->sendEmailVerificationNotification();
-        $user->notify(new WelcomeNotification());
 
         event(new Registered($user));
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\WelcomeNotification;
 use App\Support\RememberCookieManager;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -126,12 +125,6 @@ class SocialiteController extends Controller
         if ($providerUser->getEmail()) {
             $user->markEmailAsVerified();
         }
-
-        if (! $user->hasVerifiedEmail()) {
-            $user->sendEmailVerificationNotification();
-        }
-
-        $user->notify(new WelcomeNotification());
 
         event(new Registered($user));
 

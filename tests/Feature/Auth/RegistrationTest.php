@@ -8,6 +8,7 @@ use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -47,7 +48,7 @@ class RegistrationTest extends TestCase
         ]);
     }
 
-    public function test_welcome_notification_is_sent_to_new_users(): void
+    public function test_welcome_notification_is_sent_after_email_verification(): void
     {
         Notification::fake();
 
@@ -70,8 +71,22 @@ class RegistrationTest extends TestCase
 
         $this->assertNotNull($user);
 
-        Notification::assertSentToTimes($user, WelcomeNotification::class, 1);
         Notification::assertSentToTimes($user, VerifyEmail::class, 1);
+
+        Notification::assertNotSentTo($user, WelcomeNotification::class);
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $user->getKey(),
+                'hash' => sha1($user->getEmailForVerification()),
+            ],
+        );
+
+        $this->get($verificationUrl)->assertRedirect(route('verification.success'));
+
+        Notification::assertSentToTimes($user, WelcomeNotification::class, 1);
     }
 
     public function test_registration_is_limited_to_one_attempt_per_ip_by_default(): void
