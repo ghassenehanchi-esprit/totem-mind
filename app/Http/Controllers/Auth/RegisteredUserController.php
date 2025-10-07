@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\CreateNewUser;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -35,13 +36,16 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $this->ensureIsNotRateLimited($request);
+        $this->ensureRegistrationIpIsUnique($request);
 
         $key = $this->registerThrottleKey($request);
         $decayMinutes = (int) config('auth.throttle.register.decay_minutes', 5);
 
         RateLimiter::hit($key, max(1, $decayMinutes) * 60);
 
-        $user = $this->creator->create($request->all());
+        $user = $this->creator->create(array_merge($request->all(), [
+            'registration_ip' => $request->ip(),
+        ]));
 
         RateLimiter::clear($key);
 
@@ -75,5 +79,26 @@ class RegisteredUserController extends Controller
     protected function registerThrottleKey(Request $request): string
     {
         return 'register|'.$request->ip();
+    }
+
+    protected function ensureRegistrationIpIsUnique(Request $request): void
+    {
+        $ip = $request->ip();
+
+        if ($ip === null) {
+            return;
+        }
+
+        $alreadyRegistered = User::query()
+            ->where('registration_ip', $ip)
+            ->exists();
+
+        if (! $alreadyRegistered) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'email' => __('Les inscriptions multiples depuis la même adresse IP ne sont pas autorisées.'),
+        ]);
     }
 }

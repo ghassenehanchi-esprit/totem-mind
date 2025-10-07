@@ -43,6 +43,7 @@ class CreateNewUser
             'name' => $this->resolveName($input),
             'email' => strtolower($input['email']),
             'birthdate' => $input['birthdate'],
+            'registration_ip' => $input['registration_ip'] ?? null,
             'password' => Hash::make($input['password']),
         ]);
     }
